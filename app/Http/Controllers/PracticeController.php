@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Practice;
+use App\Models\Movie;
 
 class PracticeController extends Controller
 {
@@ -27,5 +28,12 @@ class PracticeController extends Controller
   {
     $practices = Practice::all();
     return view('getPractice', ['practices' => $practices]);
+  }
+
+  public function movies()
+  {
+    $movies = Movie::all();
+    return view('movies', ['movies' => $movies]);
+    // return response()->json($movies); // jsonで出力するならこれ
   }
 }
