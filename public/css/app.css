@@ -5,3 +5,9 @@
 .navbar-light .navbar-brand {
     color: #fff;
 }
+
+.movies {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
