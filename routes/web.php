@@ -25,3 +25,5 @@ Route::get('/practice2', [PracticeController::class, 'sample2']);
 Route::get('/practice3', [PracticeController::class, 'sample3']);
 Route::get('/getPractice', [PracticeController::class, 'getPractice']);
 Route::get('/movies', [PracticeController::class, 'movies']);
+Route::get('/admin', [PracticeController::class, 'movies']);
+Route::get('/admin/movies', [PracticeController::class, 'movies']);

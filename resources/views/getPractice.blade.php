@@ -9,7 +9,11 @@
 </head>
 
 <body>
+  <h1>Practice一覧</h1>
   <ul>
+    @if (count($practices) === 0)
+    <li>ブログはありません</li>
+    @endif
     @foreach ($practices as $practice)
     <li>タイトル: {{ $practice->title }}</li>
     @endforeach
