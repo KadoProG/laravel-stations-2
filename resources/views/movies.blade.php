@@ -12,6 +12,9 @@
 <body>
   <h1>ムービー一覧</h1>
   <ul class="movies">
+    @if (count($movies) === 0)
+    <li>ブログはありません</li>
+    @endif
     @foreach ($movies as $movie)
     <li>
       <p>{{ $movie->id }} :タイトル: {{ $movie->title }}</p>
