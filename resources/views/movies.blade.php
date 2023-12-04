@@ -10,7 +10,19 @@
 </head>
 
 <body>
+  <a href="/admin/movies/create">新規作成</a>
   <h1>ムービー一覧</h1>
+  @if (session('error'))
+  <p style="color: red">
+    {{ session('error') }}
+  </p>
+  @endif
+  @if (session('success'))
+  <p style="color: green">
+    {{ session('success') }}
+  </p>
+  @endif
+
   <ul class="movies">
     @if (count($movies) === 0)
     <li>ブログはありません</li>
@@ -27,6 +39,11 @@
       </ul>
       <img src="{{$movie->image_url}}" alt="画像" width="300" height="200">
       <a href="/admin/movies/{{ $movie->id }}/edit">編集する</a>
+      <form action="/admin/movies/{{$movie->id }}/destroy" method="POST">
+        @csrf
+        @method('DELETE') {{-- Use PATCH method for updates --}}
+        <button type="submit" onclick="return confirm('本当に削除しますか？')">削除する</button>
+      </form>
     </li>
     @endforeach
   </ul>
