@@ -26,6 +26,7 @@
         <li>更新日:{{$movie->updated_at}}</li>
       </ul>
       <img src="{{$movie->image_url}}" alt="画像" width="300" height="200">
+      <a href="/admin/movies/{{ $movie->id }}/edit">編集する</a>
     </li>
     @endforeach
   </ul>

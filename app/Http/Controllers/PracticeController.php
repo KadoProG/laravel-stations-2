@@ -76,4 +76,50 @@ class PracticeController extends Controller
       ]);
     }
   }
+
+  public function movies_edit(Request $request, string $id)
+  {
+    $movie = Movie::find($id);
+    if (!$movie) return redirect("/admin/movies/create/");
+    return view("movies_create", ['movie' => $movie]);
+  }
+
+  public function movies_update(Request $request, $id)
+  {
+    try {
+      $validatedData = $request->validate([
+        'title' => "required|unique:movies,title,$id", // $idを使って編集中のレコードを除外
+        'image_url' => "required|url",
+        'published_year' => "required|integer",
+        'is_showing' => "required|boolean",
+        'description' => "required",
+      ]);
+
+      // 既存のデータを取得
+      $movie = Movie::find($id);
+
+      if (!$movie) {
+        // 該当のIDのデータが存在しない場合の処理
+        return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
+      }
+
+      // データを更新
+      $movie->fill($validatedData)->save();
+
+      return redirect('/admin/movies')->with('success', '映画が更新されました。');
+    } catch (ValidationException $e) {
+      // バリデーションエラーの場合
+      return redirect("/admin/movies/{$id}/edit")->withErrors($e->errors())->withInput($request->all());
+    } catch (\Exception $e) {
+      // その他の例外の場合
+      return redirect("/admin/movies/{$id}/edit")->with([
+        'error' => 'エラーの可能性: ' . $e->getMessage(),
+        'title' => $request->input('title'),
+        'image_url' => $request->input('image_url'),
+        'published_year' => $request->input('published_year'),
+        'is_showing' => $request->input('is_showing'),
+        'description' => $request->input('description'),
+      ]);
+    }
+  }
 }
