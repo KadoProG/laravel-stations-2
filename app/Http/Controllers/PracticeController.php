@@ -39,11 +39,13 @@ class PracticeController extends Controller
     // return response()->json($movies); // jsonで出力するならこれ
   }
 
+  // 映画の新規登録に遷移
   public function movies_create()
   {
     return view('movies_create');
   }
 
+  // 映画の新規登録
   public function movies_store(Request $request)
   {
     try {
@@ -59,7 +61,7 @@ class PracticeController extends Controller
       $Movie_data = new Movie;
       $Movie_data->fill($validatedData)->save();
 
-      return redirect('/admin/movies');
+      return redirect('/admin/movies')->with('success', '映画が作成されました。');
     } catch (ValidationException $e) {
       // バリデーションエラーの場合
       return redirect('/admin/movies/create')->withErrors($e->errors())
@@ -77,13 +79,19 @@ class PracticeController extends Controller
     }
   }
 
+  // 映画の編集画面に遷移
   public function movies_edit(Request $request, string $id)
   {
     $movie = Movie::find($id);
-    if (!$movie) return redirect("/admin/movies/create/");
+
+    if (!$movie) {
+      // return redirect("/admin/movies/create/");
+      return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
+    }
     return view("movies_create", ['movie' => $movie]);
   }
 
+  // 映画の更新
   public function movies_update(Request $request, $id)
   {
     try {
@@ -120,6 +128,28 @@ class PracticeController extends Controller
         'is_showing' => $request->input('is_showing'),
         'description' => $request->input('description'),
       ]);
+    }
+  }
+
+  // 映画の削除
+  public function movies_delete(Request $request, $id)
+  {
+    // 既存のデータを取得
+    $movie = Movie::find($id);
+
+    if (!$movie) {
+      // 該当のIDのデータが存在しない場合の処理
+      abort(404, '指定されたIDの映画が見つかりませんでした。');
+    }
+
+    try {
+      // データを削除
+      $movie->delete();
+
+      return redirect('/admin/movies')->with('success', '映画が削除されました。');
+    } catch (\Exception $e) {
+      // 例外
+      return redirect("/admin/movies")->with('error', 'エラー: ' . $e->getMessage());
     }
   }
 }
