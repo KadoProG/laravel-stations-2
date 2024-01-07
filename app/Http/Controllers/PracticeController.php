@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Genre;
 use App\Practice;
 use App\Models\Movie;
+use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request; // リクエスト処理をする際はここのインポートは必須！ 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class PracticeController extends Controller
@@ -52,42 +55,83 @@ class PracticeController extends Controller
 
     // データが存在しない場合はstatus404を返す
     if ($movies->isEmpty()) {
-      abort(404);
+      // abort(404);
     }
 
     return view('movies', ['movies' => $movies, 'is_showing' => $is_showing, 'keyword' => $keyword]);
   }
 
 
+  /**movies一覧をJSONで出力 */
+  public function movies_preview()
+  {
+    $movies = Movie::all();
+    return response()->json($movies); // jsonで出力するならこれ
+  }
+
+  /**genres一覧をJSONで出力 */
+  public function genres_preview()
+  {
+    $genres = Genre::all();
+    return response()->json($genres); // jsonで出力するならこれ
+  }
+
   // 映画の新規登録に遷移
   public function movies_create()
   {
-    return view('movies_create');
+    $genres = Genre::all();
+    return view("movies_create", ['genres' => $genres]);
   }
 
-  // 映画の新規登録
+  /**映画の新規登録 */
   public function movies_store(Request $request)
   {
     try {
+
+      $title = $request->input("title");
+
+      if (!isset($title)) {
+        info('設定されていない');
+      }
+
       $validatedData = $request->validate([
         'title' => "required|unique:movies,title",
         'image_url' => "required|url",
         'published_year' => "required|integer",
         'is_showing' => "required|boolean",
+        'genre' => 'required|string',
         'description' => "required",
       ]);
 
+      DB::beginTransaction();
+
+      // ジャンルを登録 or 取得
+      $genre = Genre::firstOrCreate(['name' => $validatedData['genre']]);
+      $genreId = $genre->id;
+
       // 新しいインスタンスの作成
       $Movie_data = new Movie;
-      $Movie_data->fill($validatedData)->save();
+      $Movie_data->fill($validatedData);
+      $Movie_data->genre_id = $genreId;
+      $Movie_data->save();
+
+      DB::commit();
 
       return redirect('/admin/movies')->with('success', '映画が作成されました。');
     } catch (ValidationException $e) {
+      info('映画新規作成時エラー１: ' . $e->getMessage());
+
       // バリデーションエラーの場合
       return redirect('/admin/movies/create')->withErrors($e->errors())
         ->withInput($request->all());
     } catch (\Exception $e) {
+      info('映画新規作成時エラー２: ' . $e->getMessage());
+
       // その他の例外の場合
+      DB::rollBack();
+
+      abort(500, $e->getMessage());
+
       return redirect('/admin/movies/create')->with([
         'error' => 'エラーの可能性: ' . $e->getMessage(),
         'title' => $request->input('title'),
@@ -107,7 +151,9 @@ class PracticeController extends Controller
     if (!$movie) {
       return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
     }
-    return view("movies_create", ['movie' => $movie]);
+
+    $genres = Genre::all();
+    return view("movies_create", ['movie' => $movie, 'genres' => $genres]);
   }
 
   // 映画の更新
@@ -119,8 +165,14 @@ class PracticeController extends Controller
         'image_url' => "required|url",
         'published_year' => "required|integer",
         'is_showing' => "required|boolean",
+        'genre' => 'required|string',
         'description' => "required",
       ]);
+
+      DB::beginTransaction();
+
+      $genre = Genre::firstOrCreate(['name' => $validatedData['genre']]);
+      $genreId = $genre->id;
 
       // 既存のデータを取得
       $movie = Movie::find($id);
@@ -131,14 +183,27 @@ class PracticeController extends Controller
       }
 
       // データを更新
-      $movie->fill($validatedData)->save();
+      $movie->fill($validatedData);
+      $movie->genre_id = $genreId;
+      $movie->save();
+
+      DB::commit();
 
       return redirect('/admin/movies')->with('success', '映画が更新されました。');
     } catch (ValidationException $e) {
+      info('映画更新時エラー１: ' . $e->getMessage());
+
       // バリデーションエラーの場合
       return redirect("/admin/movies/{$id}/edit")->withErrors($e->errors())->withInput($request->all());
     } catch (\Exception $e) {
+      info('映画更新時エラー２: ' . $e->getMessage());
+
+
       // その他の例外の場合
+      DB::rollBack();
+
+      abort(500, $e->getMessage());
+
       return redirect("/admin/movies/{$id}/edit")->with([
         'error' => 'エラーの可能性: ' . $e->getMessage(),
         'title' => $request->input('title'),
@@ -146,6 +211,7 @@ class PracticeController extends Controller
         'published_year' => $request->input('published_year'),
         'is_showing' => $request->input('is_showing'),
         'description' => $request->input('description'),
+        'genre' => $request->input('genre'),
       ]);
     }
   }

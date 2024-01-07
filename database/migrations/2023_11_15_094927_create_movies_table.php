@@ -21,6 +21,11 @@ class CreateMoviesTable extends Migration
       $table->integer('published_year')->comment('公開年');
       $table->boolean('is_showing')->comment('上映中か否か');
       $table->text('description')->comment('概要');
+
+      // 外部キー制約を追加
+      $table->unsignedBigInteger('genre_id');
+      $table->foreign('genre_id')->references('id')->on('genres');
+
       $table->timestamps();
     });
   }

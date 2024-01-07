@@ -32,3 +32,7 @@ Route::post('/admin/movies/store', [PracticeController::class, 'movies_store']);
 Route::get('/admin/movies/{id}/edit/', [PracticeController::class, 'movies_edit']);
 Route::patch('/admin/movies/{id}/update/', [PracticeController::class, 'movies_update']);
 Route::delete('/admin/movies/{id}/destroy/', [PracticeController::class, 'movies_delete']);
+
+// デバッグ用
+Route::get('/test/genre', [PracticeController::class, 'genres_preview']);
+Route::get('/test/movie', [PracticeController::class, 'movies_preview']);

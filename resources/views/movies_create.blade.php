@@ -37,6 +37,30 @@
     <p style="color: red;">{{ $message }}</p>
     @enderror
 
+    <div style="position: relative;">
+      <label for="genre_id">ジャンル:</label>
+      <select name="genre_id" id="genre_id" class="form-control" value="{{ old('genre_id', $movie->genre_id ?? '') }}" style="width:120px; clip:rect(0px,120px,34px,100px); position:absolute; top: 0; height: 34px" onchange="select(this);">
+        <option value="" {{ old('genre_id', isset($movie) ? '':'selected') }}></option>
+        @foreach($genres as $genre)
+        <option value="{{ $genre->id }}" {{ old('genre_id', isset($movie->genre_id) ? ($genre->id == $movie->genre_id ? 'selected' : ''):'') }}>{{ $genre->name }}</option>
+        @endforeach
+      </select>
+      <input id="t1" name="genre" type="text" required value="{{ old('genre', isset($movie->genre_id) ? $movie->genre->name : '')}}" style="width:100px;margin-right:20px; line-height: 30px; margin: 0; padding: 0; box-sizing: border-box">
+      <script language="javascript">
+        function select(obj) {
+          document.getElementById("t1").value = obj.options[obj.selectedIndex].text;
+        }
+      </script>
+    </div>
+    @error('genre_id')
+    <p style="color: red;">{{ $message }}</p>
+    @enderror
+    @error('genre')
+    <p style="color: red;">{{ $message }}</p>
+    @enderror
+
+
+
     <p>画像URL</p>
     <input type="url" name="image_url" required value="{{ old('image_url', $movie->image_url ?? '') }}">
     @error('image_url')
