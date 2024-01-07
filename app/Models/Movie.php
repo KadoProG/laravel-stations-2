@@ -11,4 +11,9 @@ class Movie extends Model
     protected $table = "movies";
     protected $connection = "mysql";
     use HasFactory;
+
+    public function genre()
+    {
+        return $this->belongsTo(Genre::class);
+    }
 }
