@@ -32,12 +32,32 @@ class PracticeController extends Controller
     return view('getPractice', ['practices' => $practices]);
   }
 
-  public function movies()
+  public function movies(Request $request)
   {
-    $movies = Movie::all();
-    return view('movies', ['movies' => $movies]);
-    // return response()->json($movies); // jsonで出力するならこれ
+    // getParams関連を取得
+    $is_showing = $request->input('is_showing');
+    $keyword = $request->input('keyword');
+
+    // 条件を適用してデータを取得
+    $movies = Movie::when(isset($is_showing), function ($query) use ($is_showing) {
+      return $query->where('is_showing', $is_showing);
+    })
+      ->when(isset($keyword), function ($query) use ($keyword) {
+        return $query->where(function ($query) use ($keyword) {
+          $query->where('description', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('title', 'LIKE', '%' . $keyword . '%');
+        });
+      })
+      ->paginate(20, ['*'], 'page'); // ここでページネーション用のクエリパラメータを指定
+
+    // データが存在しない場合はstatus404を返す
+    if ($movies->isEmpty()) {
+      abort(404);
+    }
+
+    return view('movies', ['movies' => $movies, 'is_showing' => $is_showing, 'keyword' => $keyword]);
   }
+
 
   // 映画の新規登録に遷移
   public function movies_create()
@@ -85,7 +105,6 @@ class PracticeController extends Controller
     $movie = Movie::find($id);
 
     if (!$movie) {
-      // return redirect("/admin/movies/create/");
       return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
     }
     return view("movies_create", ['movie' => $movie]);
