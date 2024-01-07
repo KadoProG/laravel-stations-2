@@ -12,6 +12,11 @@
 <body>
   <a href="/admin/movies/create">新規作成</a>
   <h1>ムービー一覧</h1>
+
+  <p>検索リスト</p>
+  <p>is_showing: {{ isset($is_showing) ? $is_showing : '何も設定されていません' }}</p>
+  <p>keyword: {{ isset($keyword) ? $keyword : '何も設定されていません' }}</p>
+
   @if (session('error'))
   <p style="color: red">
     {{ session('error') }}
@@ -47,6 +52,7 @@
     </li>
     @endforeach
   </ul>
+  {{ $movies->appends(['keyword' => Request::input('keyword'), 'is_showing' => Request::input('is_showing')])->links() }}
 </body>
 
 </html>
