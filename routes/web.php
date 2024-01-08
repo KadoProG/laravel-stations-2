@@ -33,6 +33,9 @@ Route::get('/admin/movies/{id}/edit/', [PracticeController::class, 'movies_edit'
 Route::patch('/admin/movies/{id}/update/', [PracticeController::class, 'movies_update']);
 Route::delete('/admin/movies/{id}/destroy/', [PracticeController::class, 'movies_delete']);
 
+Route::get('/sheets', [PracticeController::class, 'sheets_get']);
+
 // デバッグ用
 Route::get('/test/genre', [PracticeController::class, 'genres_preview']);
 Route::get('/test/movie', [PracticeController::class, 'movies_preview']);
+Route::get('/test/sheet', [PracticeController::class, 'sheets_preview']);
