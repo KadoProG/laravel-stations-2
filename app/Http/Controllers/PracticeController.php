@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Genre;
 use App\Practice;
 use App\Models\Movie;
+use App\Models\Sheet;
 use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request; // リクエスト処理をする際はここのインポートは必須！ 
 use Illuminate\Support\Facades\DB;
@@ -74,6 +75,13 @@ class PracticeController extends Controller
   {
     $genres = Genre::all();
     return response()->json($genres); // jsonで出力するならこれ
+  }
+
+  /**sheets一覧をJSONで出力 */
+  public function sheets_preview()
+  {
+    $sheets = Sheet::all();
+    return response()->json($sheets); // jsonで出力するならこれ
   }
 
   // 映画の新規登録に遷移
@@ -236,5 +244,11 @@ class PracticeController extends Controller
       // 例外
       return redirect("/admin/movies")->with('error', 'エラー: ' . $e->getMessage());
     }
+  }
+
+  public function sheets_get(Request $request)
+  {
+    $sheets = Sheet::all();
+    return view('sheets', ['sheets' => $sheets]);
   }
 }
