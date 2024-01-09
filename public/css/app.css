@@ -1,20 +1,58 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  background: #a2b2d5;
+  height: 80px;
+}
+.header > h2 {
+  line-height: 50px;
+  text-align: center;
+}
+.header > nav {
+  height: 30px;
+}
+.header > nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+.header > nav ul li {
+  height: 30px;
+}
+.header > nav ul li a {
+  color: black;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 5px 10px;
+  display: inline-block;
+}
+.header > nav ul li a:hover {
+  text-decoration: underline;
+}
+
 .bg-navbar {
-    background-color: #6590ee;
+  background-color: #6590ee;
 }
 
 .navbar-light .navbar-brand {
-    color: #fff;
+  color: #fff;
 }
 
 .movies {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .movies img {
-    width: 300px;
-    height: auto;
-    max-height: 200px;
-    object-fit: cover;
+  width: 300px;
+  height: auto;
+  max-height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }

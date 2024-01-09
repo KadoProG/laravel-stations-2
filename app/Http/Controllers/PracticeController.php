@@ -6,7 +6,7 @@ use App\Models\Genre;
 use App\Practice;
 use App\Models\Movie;
 use App\Models\Sheet;
-use Illuminate\Contracts\Support\ValidatedData;
+use App\Models\Schedule;
 use Illuminate\Http\Request; // リクエスト処理をする際はここのインポートは必須！ 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -36,7 +36,7 @@ class PracticeController extends Controller
     return view('getPractice', ['practices' => $practices]);
   }
 
-  public function movies(Request $request)
+  public function movies(Request $request, bool $hasAdmin = false)
   {
     // getParams関連を取得
     $is_showing = $request->input('is_showing');
@@ -54,12 +54,32 @@ class PracticeController extends Controller
       })
       ->paginate(20, ['*'], 'page'); // ここでページネーション用のクエリパラメータを指定
 
-    // データが存在しない場合はstatus404を返す
-    if ($movies->isEmpty()) {
-      // abort(404);
+    return view('movies', ['movies' => $movies, 'is_showing' => $is_showing, 'keyword' => $keyword, 'hasAdmin' => $hasAdmin]);
+  }
+
+  public function movie_admin(Request $request)
+  {
+    return $this->movies($request, true);
+  }
+
+  public function movie_detail(Request $request, $id)
+  {
+    info('ムービーソロが閲覧されました：' . $id);
+
+    $movie = Movie::find($id);
+
+    info($movie);
+
+    if (!$movie) {
+      return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
     }
 
-    return view('movies', ['movies' => $movies, 'is_showing' => $is_showing, 'keyword' => $keyword]);
+
+    $schedules = Schedule::where('movie_id', $id)
+      ->orderBy('start_time', 'asc')
+      ->get();
+
+    return view("movie_detail", ['movie' => $movie, 'schedules' => $schedules]);
   }
 
 
@@ -84,6 +104,20 @@ class PracticeController extends Controller
     return response()->json($sheets); // jsonで出力するならこれ
   }
 
+  /**sheets一覧をJSONで出力 */
+  public function schedules_preview()
+  {
+    $schedules = Schedule::all();
+    return response()->json($schedules); // jsonで出力するならこれ
+  }
+
+
+  /**JSONで出力 */
+  public function schedules_test(Request $request)
+  {
+    return response()->json([]); // jsonで出力するならこれ
+  }
+
   // 映画の新規登録に遷移
   public function movies_create()
   {
@@ -91,17 +125,23 @@ class PracticeController extends Controller
     return view("movies_create", ['genres' => $genres]);
   }
 
+  // 映画の編集画面に遷移
+  public function movies_edit(Request $request, string $id)
+  {
+    $movie = Movie::find($id);
+
+    if (!$movie) {
+      return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
+    }
+
+    $genres = Genre::all();
+    return view("movies_create", ['movie' => $movie, 'genres' => $genres]);
+  }
+
   /**映画の新規登録 */
   public function movies_store(Request $request)
   {
     try {
-
-      $title = $request->input("title");
-
-      if (!isset($title)) {
-        info('設定されていない');
-      }
-
       $validatedData = $request->validate([
         'title' => "required|unique:movies,title",
         'image_url' => "required|url",
@@ -149,19 +189,6 @@ class PracticeController extends Controller
         'description' => $request->input('description'),
       ]);
     }
-  }
-
-  // 映画の編集画面に遷移
-  public function movies_edit(Request $request, string $id)
-  {
-    $movie = Movie::find($id);
-
-    if (!$movie) {
-      return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
-    }
-
-    $genres = Genre::all();
-    return view("movies_create", ['movie' => $movie, 'genres' => $genres]);
   }
 
   // 映画の更新
