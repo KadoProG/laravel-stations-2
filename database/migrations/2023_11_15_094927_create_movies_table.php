@@ -25,6 +25,7 @@ class CreateMoviesTable extends Migration
       // 外部キー制約を追加
       $table->unsignedBigInteger('genre_id');
       $table->foreign('genre_id')->references('id')->on('genres');
+      $table->index('genre_id');
 
       $table->timestamps();
     });

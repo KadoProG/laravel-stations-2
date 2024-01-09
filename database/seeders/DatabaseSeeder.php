@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PracticeTableSeeder::class);
         $this->call(GenreTableSeeder::class);
-        $this->call(MovieTableSeeder::class);
         $this->call(SheetTableSeeder::class);
+        $this->call(ScheduleTableSeeder::class);
+        $this->call(MovieTableSeeder::class);
     }
 }

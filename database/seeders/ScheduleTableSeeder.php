@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Movie;
+use App\Models\Schedule;
 use Illuminate\Database\Seeder;
 
-class MovieTableSeeder extends Seeder
+class ScheduleTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class MovieTableSeeder extends Seeder
      */
     public function run()
     {
-        Movie::factory(3)->create();
+        Schedule::factory(70)->create();
     }
 }
