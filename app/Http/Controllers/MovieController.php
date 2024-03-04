@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Genre;
-use App\Practice;
 use App\Models\Movie;
 use App\Models\Sheet;
 use App\Models\Schedule;
