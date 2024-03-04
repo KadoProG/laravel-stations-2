@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,22 +25,22 @@ Route::get('/practice', [PracticeController::class, 'sample']);
 Route::get('/practice2', [PracticeController::class, 'sample2']);
 Route::get('/practice3', [PracticeController::class, 'sample3']);
 Route::get('/getPractice', [PracticeController::class, 'getPractice']);
-Route::get('/movies', [PracticeController::class, 'movies']);
-Route::get('/movies/{id}', [PracticeController::class, 'movie_detail']);
-Route::get('/admin', [PracticeController::class, 'movies']);
-Route::get('/admin/movies', [PracticeController::class, 'movie_admin']);
-Route::get('/admin/movies/create', [PracticeController::class, 'movies_create']);
-Route::post('/admin/movies/store', [PracticeController::class, 'movies_store']);
-Route::get('/admin/movies/{id}/edit', [PracticeController::class, 'movies_edit']);
-Route::get('/admin/movies/{id}', [PracticeController::class, 'movie_detail']);
-Route::patch('/admin/movies/{id}/update', [PracticeController::class, 'movies_update']);
-Route::delete('/admin/movies/{id}/destroy', [PracticeController::class, 'movies_delete']);
 
-Route::get('/sheets', [PracticeController::class, 'sheets_get']);
+Route::get('/movies', [MovieController::class, 'movies']);
+Route::get('/movies/{id}', [MovieController::class, 'movie_detail']);
+Route::get('/admin/movies', [MovieController::class, 'movie_admin']);
+Route::get('/admin/movies/create', [MovieController::class, 'movies_create']);
+Route::post('/admin/movies/store', [MovieController::class, 'movies_store']);
+Route::get('/admin/movies/{id}/edit', [MovieController::class, 'movies_edit']);
+Route::get('/admin/movies/{id}', [MovieController::class, 'movie_detail']);
+Route::patch('/admin/movies/{id}/update', [MovieController::class, 'movies_update']);
+Route::delete('/admin/movies/{id}/destroy', [MovieController::class, 'movies_delete']);
+
+Route::get('/sheets', [MovieController::class, 'sheets_get']);
 
 // デバッグ用
-Route::get('/test/genre', [PracticeController::class, 'genres_preview']);
-Route::get('/test/movie', [PracticeController::class, 'movies_preview']);
-Route::get('/test/sheet', [PracticeController::class, 'sheets_preview']);
-Route::get('/test/schedule', [PracticeController::class, 'schedules_preview']);
-Route::get('/test/scheduleTest', [PracticeController::class, 'schedules_test']);
+Route::get('/test/genre', [MovieController::class, 'genres_preview']);
+Route::get('/test/movie', [MovieController::class, 'movies_preview']);
+Route::get('/test/sheet', [MovieController::class, 'sheets_preview']);
+Route::get('/test/schedule', [MovieController::class, 'schedules_preview']);
+Route::get('/test/scheduleTest', [MovieController::class, 'schedules_test']);
