@@ -20,6 +20,7 @@ Route::get('/', function () {
 });
 
 use App\Http\Controllers\PracticeController;
+use App\Http\Controllers\ScheduleAPIController;
 use App\Http\Controllers\ScheduleController;
 
 // Route::get('URL', [Controllerの名前::class, 'Controller内のfunction名']);
@@ -41,6 +42,7 @@ Route::delete('/admin/movies/{id}/destroy', [MovieAPIController::class, 'movies_
 Route::get('/sheets', [MovieController::class, 'sheets_get']);
 
 Route::get('/admin/movies/{id}/schedules/create', [ScheduleController::class, 'page_get_schedules_admin_create']); // スケジュール一覧表示
+Route::post('/admin/movies/{id}/schedules/store', [ScheduleAPIController::class, 'post_schedules_store']); // スケジュール更新
 
 Route::get('/admin/schedules', [ScheduleController::class, 'page_get_schedules_admin']); // スケジュール一覧表示
 Route::get('/test/admin/schedules', [ScheduleController::class, 'page_get_schedules_admin_json']); // スケジュール一覧表示

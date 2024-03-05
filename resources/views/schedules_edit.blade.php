@@ -25,10 +25,10 @@
 <p>上映中・上映予定：{{$movie->is_showing == "1" ? '上映中': '上映予定'}}</p>
 <p>概要：{{$movie->description}}</p>
 
-<form action="/admin{{ isset($schedule) ? $schedule->id . '/schedules/update/':'movies/{$movie->id}/schedules/store' }}" method="POST">
+<form action="/admin{{ isset($schedule) ? $schedule->id . '/schedules/update/' : '/movies/' .  $movie->id . '/schedules/store' }}" method="POST">
   @csrf
 
-  @if (isset($movie))
+  @if (isset($schedule))
   @method('PATCH') {{-- Use PATCH method for updates --}}
   @endif
 
