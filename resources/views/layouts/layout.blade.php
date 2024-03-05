@@ -10,7 +10,7 @@
 
 <body>
   <header class="header">
-    <h2>My Laravel App</h2>
+    <h2><a href="/">My Laravel App</a></h2>
     <nav>
       <ul>
         <li><a href="/movies">ムービー</a></li>

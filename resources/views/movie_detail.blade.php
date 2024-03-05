@@ -27,18 +27,25 @@
       <li>更新日:{{$movie->updated_at}}</li>
     </ul>
     <img src="{{$movie->image_url}}" alt="画像" width="300" height="200">
-    <a href="/admin/movies/{{ $movie->id }}/edit">編集する</a>
+    <div>
+      <a href="/admin/movies/{{ $movie->id }}/edit">編集する</a>
+      <a href="/admin/movies/{{ $movie->id }}/schedules/create">予定を追加</a>
+    </div>
+
     <form action="/admin/movies/{{$movie->id }}/destroy" method="POST">
       @csrf
       @method('DELETE') {{-- Use PATCH method for updates --}}
       <button type="submit" onclick="return confirm('本当に削除しますか？')">削除する</button>
     </form>
-    <p>公開予定</p>
+    <h2>公開予定</h2>
     <ul>
       @foreach($schedules as $schedule)
       <li>
-        上映開始：{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
-        終了：{{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}
+        <a href="/admin/schedules/{{$schedule->id}}">
+          上映開始：{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
+          終了：{{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}
+        </a>
+        <a href="/admin/schedules/{{$schedule->id}}/edit">編集する</a>
       </li>
       @endforeach
     </ul>

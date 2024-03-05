@@ -53,8 +53,6 @@
   <p style="color: red;">{{ $message }}</p>
   @enderror
 
-
-
   <p>画像URL</p>
   <input type="url" name="image_url" required value="{{ old('image_url', $movie->image_url ?? '') }}">
   @error('image_url')
