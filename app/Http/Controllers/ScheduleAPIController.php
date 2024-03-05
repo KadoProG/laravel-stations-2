@@ -63,76 +63,71 @@ class ScheduleAPIController extends Controller
 
       return redirect('/admin/movies/create')->with([
         'error' => 'エラーの可能性: ' . $e->getMessage(),
-        'title' => $request->input('title'),
-        'image_url' => $request->input('image_url'),
-        'published_year' => $request->input('published_year'),
-        'is_showing' => $request->input('is_showing'),
-        'description' => $request->input('description'),
+        'start_time_date' => $request->input('start_time_date'),
+        'start_time_time' => $request->input('start_time_time'),
+        'end_time_date' => $request->input('end_time_date'),
+        'end_time_time' => $request->input('end_time_time'),
       ]);
     }
   }
 
-  // /**
-  //  * 映画の更新
-  //  */
-  // public function movies_update(Request $request, $id)
-  // {
-  //   try {
-  //     $validatedData = $request->validate([
-  //       'title' => "required|unique:movies,title,$id", // $idを使って編集中のレコードを除外
-  //       'image_url' => "required|url",
-  //       'published_year' => "required|integer",
-  //       'is_showing' => "required|boolean",
-  //       'genre' => 'required|string',
-  //       'description' => "required",
-  //     ]);
+  /**
+   * 映画の更新
+   */
+  public function patch_schedules_update(Request $request, string $id)
+  {
+    try {
+      $validatedData = $request->validate([
+        'start_time_date' => "required|date",
+        'start_time_time' => "required|date_format:H:i",
+        'end_time_date' => "required|date",
+        'end_time_time' => "required|date_format:H:i",
+      ]);
 
-  //     DB::beginTransaction();
+      // ミューテータを使用してstart_timeとend_timeを結合
+      $validatedData['start_time'] = $validatedData['start_time_date'] . ' ' . $validatedData['start_time_time'];
+      $validatedData['end_time'] = $validatedData['end_time_date'] . ' ' . $validatedData['end_time_time'];
 
-  //     $genre = Genre::firstOrCreate(['name' => $validatedData['genre']]);
-  //     $genreId = $genre->id;
+      DB::beginTransaction();
 
-  //     // 既存のデータを取得
-  //     $movie = Movie::find($id);
+      // 既存のデータを取得
+      $schedule = Schedule::find($id);
 
-  //     if (!$movie) {
-  //       // 該当のIDのデータが存在しない場合の処理
-  //       return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
-  //     }
+      if (!$schedule) {
+        // 該当のIDのデータが存在しない場合の処理
+        return redirect('/admin/movies')->with('error', '指定されたIDのスケジュールが見つかりませんでした。');
+      }
 
-  //     // データを更新
-  //     $movie->fill($validatedData);
-  //     $movie->genre_id = $genreId;
-  //     $movie->save();
+      // データを更新
+      $schedule->fill($validatedData);
+      $schedule->save();
 
-  //     DB::commit();
+      DB::commit();
 
-  //     return redirect('/admin/movies')->with('success', '映画が更新されました。');
-  //   } catch (ValidationException $e) {
-  //     info('映画更新時エラー１: ' . $e->getMessage());
+      return redirect('/admin/movies')->with('success', '映画が更新されました。');
+    } catch (ValidationException $e) {
+      info('映画更新時エラー１: ' . $e->getMessage());
 
-  //     // バリデーションエラーの場合
-  //     return redirect("/admin/movies/{$id}/edit")->withErrors($e->errors())->withInput($request->all());
-  //   } catch (\Exception $e) {
-  //     info('映画更新時エラー２: ' . $e->getMessage());
+      // バリデーションエラーの場合
+      return redirect("/admin/movies/{$id}/edit")->withErrors($e->errors())->withInput($request->all());
+    } catch (\Exception $e) {
+      info('映画更新時エラー２: ' . $e->getMessage());
 
 
-  //     // その他の例外の場合
-  //     DB::rollBack();
+      // その他の例外の場合
+      DB::rollBack();
 
-  //     abort(500, $e->getMessage());
+      abort(500, $e->getMessage());
 
-  //     return redirect("/admin/movies/{$id}/edit")->with([
-  //       'error' => 'エラーの可能性: ' . $e->getMessage(),
-  //       'title' => $request->input('title'),
-  //       'image_url' => $request->input('image_url'),
-  //       'published_year' => $request->input('published_year'),
-  //       'is_showing' => $request->input('is_showing'),
-  //       'description' => $request->input('description'),
-  //       'genre' => $request->input('genre'),
-  //     ]);
-  //   }
-  // }
+      return redirect("/admin/movies/{$id}/edit")->with([
+        'error' => 'エラーの可能性: ' . $e->getMessage(),
+        'start_time_date' => $request->input('start_time_date'),
+        'start_time_time' => $request->input('start_time_time'),
+        'end_time_date' => $request->input('end_time_date'),
+        'end_time_time' => $request->input('end_time_time'),
+      ]);
+    }
+  }
 
   // /**
   //  * 映画の削除

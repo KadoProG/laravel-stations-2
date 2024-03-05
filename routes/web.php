@@ -45,6 +45,8 @@ Route::get('/admin/movies/{id}/schedules/create', [ScheduleController::class, 'p
 Route::post('/admin/movies/{id}/schedules/store', [ScheduleAPIController::class, 'post_schedules_store']); // スケジュール更新
 
 Route::get('/admin/schedules', [ScheduleController::class, 'page_get_schedules_admin']); // スケジュール一覧表示
+Route::get('/admin/schedules/{scheduleId}/edit', [ScheduleController::class, 'page_get_schedules_admin_edit']); // スケジュール編集
+Route::patch('/admin/schedules/{id}/update', [ScheduleAPIController::class, 'patch_schedules_update']); // スケジュール更新
 Route::get('/test/admin/schedules', [ScheduleController::class, 'page_get_schedules_admin_json']); // スケジュール一覧表示
 
 // デバッグ用

@@ -25,7 +25,7 @@
 <p>上映中・上映予定：{{$movie->is_showing == "1" ? '上映中': '上映予定'}}</p>
 <p>概要：{{$movie->description}}</p>
 
-<form action="/admin{{ isset($schedule) ? $schedule->id . '/schedules/update/' : '/movies/' .  $movie->id . '/schedules/store' }}" method="POST">
+<form action="/admin{{ isset($schedule) ? '/schedules/' . $schedule->id . '/update/' : '/movies/' .  $movie->id . '/schedules/store' }}" method="POST">
   @csrf
 
   @if (isset($schedule))
@@ -33,23 +33,23 @@
   @endif
 
   <p>開始日時</p>
-  <input type="date" name="start_time_date" required value="{{ old('start_time_date', $movie->start_time_date ?? '') }}">
+  <input type="date" name="start_time_date" required value="{{ old('start_time_date', $schedule->start_time_date ?? '') }}">
   {{-- エラーメッセージの表示 --}}
   @error('start_time_date')
   <p style="color: red;">{{ $message }}</p>
   @enderror
-  <input type="time" name="start_time_time" required value="{{ old('start_time_time', $movie->start_time_time ?? '') }}">
+  <input type="time" name="start_time_time" required value="{{ old('start_time_time', $schedule->start_time_time ?? '') }}">
   {{-- エラーメッセージの表示 --}}
   @error('start_time_time')
   <p style="color: red;">{{ $message }}</p>
   @enderror
   <p>終了日時</p>
-  <input type="date" name="end_time_date" required value="{{ old('end_time_date', $movie->end_time_date ?? '') }}">
+  <input type="date" name="end_time_date" required value="{{ old('end_time_date', $schedule->end_time_date ?? '') }}">
   {{-- エラーメッセージの表示 --}}
   @error('end_time_date')
   <p style="color: red;">{{ $message }}</p>
   @enderror
-  <input type="time" name="end_time_time" required value="{{ old('end_time_time', $movie->end_time_time ?? '') }}">
+  <input type="time" name="end_time_time" required value="{{ old('end_time_time', $schedule->end_time_time ?? '') }}">
   {{-- エラーメッセージの表示 --}}
   @error('end_time_time')
   <p style="color: red;">{{ $message }}</p>
