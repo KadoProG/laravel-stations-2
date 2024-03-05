@@ -414,6 +414,7 @@
     </div>
     @endif
 
+
     <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
       <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
         <svg viewBox="0 0 651 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto text-gray-700 sm:h-20">
@@ -422,6 +423,28 @@
           </g>
         </svg>
       </div>
+
+      <ul>
+        <?php $routes = [
+          ['route' => '/', 'name' => 'HOME画面'],
+          ['route' => '/practice', 'name' => 'practice'],
+          ['route' => '/practice2', 'name' => 'practice'],
+          ['route' => '/practice3', 'name' => 'practice'],
+          ['route' => '/getPractice', 'name' => 'practice'],
+          ['route' => '/movies', 'name' => 'ムービー一覧'],
+          ['route' => '/admin/movies', 'name' => 'ムービー一覧(admin)'],
+          ['route' => '/admin/schedules', 'name' => 'スケジュール'],
+          ['route' => '/test/movie', 'name' => 'ムービー'],
+          ['route' => '/test/schedule', 'name' => 'スケジュール'],
+          ['route' => '/test/sheet', 'name' => 'シート'],
+          ['route' => '/test/genre', 'name' => 'ジャンル'],
+          ['route' => '/test/scheduleTest', 'name' => 'スケジュールテスト'],
+        ] ?>
+        @foreach ($routes as $route)
+        <li style="margin:10px 20px"><a href="{{$route['route']}}" target="_blank">{{$route['name']}}<span style="background: #ddd; margin: 10px; padding: 4px">{{$route['route']}}</span></a></li>
+        @endforeach
+      </ul>
+
 
       <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
         <div class="grid grid-cols-1 md:grid-cols-2">
