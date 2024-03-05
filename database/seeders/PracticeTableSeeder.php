@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Practice;
+use App\Models\Practice;
 use Illuminate\Database\Seeder;
 
 class PracticeTableSeeder extends Seeder

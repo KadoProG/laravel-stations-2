@@ -16,7 +16,5 @@ class Schedule extends Model
         return $this->belongsTo(Movie::class);
     }
 
-    protected $dates = [
-        'start_time', "end_time"
-    ];
+    protected $dates = ['start_time', "end_time"];
 }
