@@ -42,10 +42,14 @@
       @foreach($schedules as $schedule)
       <li>
         <a href="/admin/schedules/{{$schedule->id}}">
-          上映開始：{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
-          終了：{{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}
+          上映：{{ $schedule->start_time }}〜{{ $schedule->end_time }}
         </a>
         <a href="/admin/schedules/{{$schedule->id}}/edit">編集する</a>
+        <form action="/admin/schedules/{{$schedule->id }}/destroy" method="POST">
+          @csrf
+          @method('DELETE') {{-- Use PATCH method for updates --}}
+          <button type="submit" onclick="return confirm('本当に削除しますか？')">削除する</button>
+        </form>
       </li>
       @endforeach
     </ul>
