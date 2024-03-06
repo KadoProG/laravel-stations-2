@@ -19,6 +19,17 @@
 
 <!-- ＜Movie（編集不可）データ -->
 <h2>タイトル：{{$movie->title}}</h2>
+
+{{-- エラーメッセージの表示 --}}
+@error('$movie_id')
+<p style="color: red;">{{ $message }}</p>
+@enderror
+
+{{-- エラーメッセージの表示 --}}
+@error('$id')
+<p style="color: red;">{{ $message }}</p>
+@enderror
+
 <p>作品ID：{{$movie->id}}</p>
 <p>画像URL：{{$movie->image_url}}</p>
 <p>公開年：{{$movie->published_year}}</p>
@@ -31,6 +42,11 @@
   @if (isset($schedule))
   @method('PATCH') {{-- Use PATCH method for updates --}}
   @endif
+
+  @if (isset($schedule))
+  <input type="hidden" name="id" value="{{ $schedule->id }}">
+  @endif
+  <input type="hidden" name="movie_id" value="{{ $movie->id }}">
 
   <p>開始日時</p>
   <input type="date" name="start_time_date" required value="{{ old('start_time_date', $schedule->start_time_date ?? '') }}">
