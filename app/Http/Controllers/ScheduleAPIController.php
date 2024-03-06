@@ -25,12 +25,12 @@ class ScheduleAPIController extends Controller
         return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
       }
 
-      $request['movie_id'] = $id;
+      // $request['movie_id'] = $id;
       $validatedData = $request->validate([
         'movie_id' => 'required|exists:movies,id',
-        'start_time_date' => "required|date",
+        'start_time_date' => "required|date_format:Y-m-d",
         'start_time_time' => "required|date_format:H:i",
-        'end_time_date' => "required|date",
+        'end_time_date' => "required|date_format:Y-m-d",
         'end_time_time' => "required|date_format:H:i",
       ]);
 
@@ -64,6 +64,7 @@ class ScheduleAPIController extends Controller
 
       return redirect('/admin/movies/create')->with([
         'error' => 'エラーの可能性: ' . $e->getMessage(),
+        'movie_id' => $request->input('movie_id'),
         'start_time_date' => $request->input('start_time_date'),
         'start_time_time' => $request->input('start_time_time'),
         'end_time_date' => $request->input('end_time_date'),
@@ -78,12 +79,13 @@ class ScheduleAPIController extends Controller
   public function patch_schedules_update(Request $request, string $id)
   {
     try {
-      $request['id'] = $id;
+      $request['id'] = $id; // こっちは何故か有効…
       $validatedData = $request->validate([
         'id' => 'required|exists:schedules,id',
-        'start_time_date' => "required|date",
+        'movie_id' => 'required|exists:movies,id',
+        'start_time_date' => "required|date_format:Y-m-d",
         'start_time_time' => "required|date_format:H:i",
-        'end_time_date' => "required|date",
+        'end_time_date' => "required|date_format:Y-m-d",
         'end_time_time' => "required|date_format:H:i",
       ]);
 
@@ -107,7 +109,7 @@ class ScheduleAPIController extends Controller
 
       DB::commit();
 
-      return redirect('/admin/movies')->with('success', '映画が更新されました。');
+      return redirect('/admin/movies')->with('success', 'スケジュールが更新されました。');
     } catch (ValidationException $e) {
       info('映画更新時エラー１: ' . $e->getMessage());
 
@@ -124,6 +126,8 @@ class ScheduleAPIController extends Controller
 
       return redirect("/admin/movies/{$id}/edit")->with([
         'error' => 'エラーの可能性: ' . $e->getMessage(),
+        'id' => $request->input('id'),
+        'movie_id' => $request->input('movie_id'),
         'start_time_date' => $request->input('start_time_date'),
         'start_time_time' => $request->input('start_time_time'),
         'end_time_date' => $request->input('end_time_date'),

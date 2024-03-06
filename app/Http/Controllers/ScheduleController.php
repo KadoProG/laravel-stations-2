@@ -49,8 +49,11 @@ class ScheduleController extends Controller
     $schedule['end_time_date'] = $schedule->end_time->format('Y-m-d');
     $schedule['end_time_time'] = $schedule->end_time->format('H:i');
 
-    $movie = Movie::find($schedule->id);
+    $movie = Movie::find($schedule->movie_id);
 
+    if (!$movie) {
+      return redirect('/admin/movies')->with('error', '指定されたIDのスケジュールが見つかりませんでした。');
+    }
     return view("schedules_edit", ['movie' => $movie, 'schedule' => $schedule]);
   }
 
