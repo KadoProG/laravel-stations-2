@@ -16,7 +16,6 @@ class ScheduleAPIController extends Controller
   public function post_schedules_store(Request $request, string $id)
   {
     try {
-
       // 既存のデータを取得
       $movie = Movie::find($id);
 
@@ -25,7 +24,6 @@ class ScheduleAPIController extends Controller
         return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
       }
 
-      // $request['movie_id'] = $id;
       $validatedData = $request->validate([
         'movie_id' => 'required|exists:movies,id',
         'start_time_date' => "required|date_format:Y-m-d",

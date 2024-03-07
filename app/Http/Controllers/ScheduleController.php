@@ -13,7 +13,6 @@ class ScheduleController extends Controller
    */
   public function page_get_schedules_admin()
   {
-    // $schedules = Schedule::orderBy('');
     $moviesWithSchedules = Movie::with('schedules')->get();
 
     $hasAdmin = true;
@@ -59,7 +58,6 @@ class ScheduleController extends Controller
 
   public function page_get_schedules_admin_json()
   {
-    // $schedules = Schedule::orderBy('');
     $moviesWithSchedules = Movie::with('schedules')->get();
     return response()->json($moviesWithSchedules); // jsonで出力するならこれ
   }
