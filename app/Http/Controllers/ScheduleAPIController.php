@@ -48,8 +48,6 @@ class ScheduleAPIController extends Controller
         "end_time" => "required|date_format:Y-m-d H:i",
       ])->validate();
 
-      info($additionalValidation);
-
       DB::beginTransaction();
 
       // 新しいインスタンスの作成
