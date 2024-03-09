@@ -44,16 +44,11 @@ class MovieController extends Controller
 
   public function movie_detail(Request $request, $id)
   {
-    info('ムービーソロが閲覧されました：' . $id);
-
     $movie = Movie::find($id);
-
-    info($movie);
 
     if (!$movie) {
       return redirect('/admin/movies')->with('error', '指定されたIDの映画が見つかりませんでした。');
     }
-
 
     $schedules = Schedule::where('movie_id', $id)
       ->orderBy('start_time', 'asc')

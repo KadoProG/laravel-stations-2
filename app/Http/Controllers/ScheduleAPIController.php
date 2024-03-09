@@ -6,6 +6,7 @@ use App\Models\Movie;
 use App\Models\Schedule;
 use Illuminate\Http\Request; // リクエスト処理をする際はここのインポートは必須！ 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class ScheduleAPIController extends Controller
@@ -36,21 +37,34 @@ class ScheduleAPIController extends Controller
       $validatedData['start_time'] = $validatedData['start_time_date'] . ' ' . $validatedData['start_time_time'];
       $validatedData['end_time'] = $validatedData['end_time_date'] . ' ' . $validatedData['end_time_time'];
 
+      // 追加のバリデーション
+      $additionalValidation = Validator::make($validatedData, [
+        'movie_id' => 'required|exists:movies,id',
+        'start_time_date' => "required|date_format:Y-m-d|schedule_date_time_after_start_date_validation",
+        'start_time_time' => "required|date_format:H:i|schedule_date_time_after_start_time_validation|schedule_date_time_diff_minute_validation",
+        'end_time_date' => "required|date_format:Y-m-d|schedule_date_time_after_start_date_validation",
+        'end_time_time' => "required|date_format:H:i|schedule_date_time_after_start_time_validation|schedule_date_time_diff_minute_validation",
+        "start_time" => "required|date_format:Y-m-d H:i",
+        "end_time" => "required|date_format:Y-m-d H:i",
+      ])->validate();
+
+      info($additionalValidation);
+
       DB::beginTransaction();
 
       // 新しいインスタンスの作成
       $schedule_data = new Schedule();
-      $schedule_data->fill($validatedData);
+      $schedule_data->fill($additionalValidation);
       $schedule_data->save();
 
       DB::commit();
 
-      return redirect('/admin/movies')->with('success', 'スケジュールが作成されました。');
+      return redirect("/admin/movies/{$id}")->with('success', 'スケジュールが作成されました。');
     } catch (ValidationException $e) {
       info('スケジュール作成時エラー１: ' . $e->getMessage());
 
       // バリデーションエラーの場合
-      return redirect('/admin/movies/create')->withErrors($e->errors())
+      return redirect('/admin/movies/' . $id . '/schedules/create')->withErrors($e->errors())
         ->withInput($request->all());
     } catch (\Exception $e) {
       info('スケジュール新規作成時エラー２: ' . $e->getMessage());
@@ -60,7 +74,7 @@ class ScheduleAPIController extends Controller
 
       abort(500, $e->getMessage());
 
-      return redirect('/admin/movies/create')->with([
+      return redirect('/admin/movies/' . $id . '/schedules/create')->with([
         'error' => 'エラーの可能性: ' . $e->getMessage(),
         'movie_id' => $request->input('movie_id'),
         'start_time_date' => $request->input('start_time_date'),
@@ -78,6 +92,7 @@ class ScheduleAPIController extends Controller
   {
     try {
       $request['id'] = $id; // こっちは何故か有効…
+
       $validatedData = $request->validate([
         'id' => 'required|exists:schedules,id',
         'movie_id' => 'required|exists:movies,id',
@@ -91,6 +106,19 @@ class ScheduleAPIController extends Controller
       $validatedData['start_time'] = $validatedData['start_time_date'] . ' ' . $validatedData['start_time_time'];
       $validatedData['end_time'] = $validatedData['end_time_date'] . ' ' . $validatedData['end_time_time'];
 
+      // 追加のバリデーション
+      $additionalValidation = Validator::make($validatedData, [
+        'id' => 'required|exists:schedules,id',
+        'movie_id' => 'required|exists:movies,id',
+        'start_time_date' => "required|date_format:Y-m-d|schedule_date_time_after_start_date_validation",
+        'start_time_time' => "required|date_format:H:i|schedule_date_time_after_start_time_validation|schedule_date_time_diff_minute_validation",
+        'end_time_date' => "required|date_format:Y-m-d|schedule_date_time_after_start_date_validation",
+        'end_time_time' => "required|date_format:H:i|schedule_date_time_after_start_time_validation|schedule_date_time_diff_minute_validation",
+        "start_time" => "required|date_format:Y-m-d H:i",
+        "end_time" => "required|date_format:Y-m-d H:i",
+      ])->validate();
+
+
       DB::beginTransaction();
 
       // 既存のデータを取得
@@ -102,17 +130,17 @@ class ScheduleAPIController extends Controller
       }
 
       // データを更新
-      $schedule->fill($validatedData);
+      $schedule->fill($additionalValidation);
       $schedule->save();
 
       DB::commit();
 
-      return redirect('/admin/movies')->with('success', 'スケジュールが更新されました。');
+      return redirect('/admin/movies/' . $request['movie_id'])->with('success', 'スケジュールが更新されました。');
     } catch (ValidationException $e) {
       info('映画更新時エラー１: ' . $e->getMessage());
 
       // バリデーションエラーの場合
-      return redirect("/admin/movies/{$id}/edit")->withErrors($e->errors())->withInput($request->all());
+      return redirect("/admin/schedules/{$id}/edit")->withErrors($e->errors())->withInput($request->all());
     } catch (\Exception $e) {
       info('映画更新時エラー２: ' . $e->getMessage());
 
@@ -122,7 +150,7 @@ class ScheduleAPIController extends Controller
 
       abort(500, $e->getMessage());
 
-      return redirect("/admin/movies/{$id}/edit")->with([
+      return redirect("/admin/schedules/{$id}/edit")->with([
         'error' => 'エラーの可能性: ' . $e->getMessage(),
         'id' => $request->input('id'),
         'movie_id' => $request->input('movie_id'),
