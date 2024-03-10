@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservation;
 use App\Models\Sheet;
 use Illuminate\Http\Request; // リクエスト処理をする際はここのインポートは必須！ 
 
@@ -36,5 +37,12 @@ class SheetController extends Controller
       'movie_id' => $movie_id, 'schedule_id' => $schedule_id,
       'sheet_id' => $sheet_id
     ]);
+  }
+
+  /**JSONで出力 */
+  public function page_get_reserve_json(Request $request)
+  {
+    $reservations = Reservation::all();
+    return response()->json(['reservations' => $reservations]); // jsonで出力するならこれ
   }
 }

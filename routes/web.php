@@ -60,3 +60,4 @@ Route::get('/test/movie', [MovieController::class, 'movies_preview']);
 Route::get('/test/sheet', [MovieController::class, 'sheets_preview']);
 Route::get('/test/schedule', [MovieController::class, 'schedules_preview']);
 Route::get('/test/scheduleTest', [MovieController::class, 'schedules_test']);
+Route::get('/test/reservation', [SheetController::class, 'page_get_reserve_json']);
