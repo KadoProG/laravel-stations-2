@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'ムービーを作成・編集する')
+@section('title', 'HOME画面')
 
 @section('content')
 
