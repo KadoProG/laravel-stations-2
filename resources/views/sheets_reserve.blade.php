@@ -5,7 +5,7 @@
 @section('content')
 
 
-<h1>シート最終登録</h1>
+
 
 
 @if (session('error'))
@@ -20,35 +20,83 @@
 @endif
 
 
-<style>
-  table tr th {
-    width: 80px;
-    background: #ddd;
-  }
-
-  table tr td {
-    background: #f5f5f5;
-    text-align: center;
-  }
-
-  table tr td button {
-    width: 100%;
-    background: transparent;
-    border: none;
-    height: 24px;
-    cursor: pointer;
-    margin-bottom: 2px;
-  }
-
-  table tr td button:hover {
-    background: #fff;
-  }
-</style>
-
 @if (isset($movie_id) && isset($schedule_id))
-<p>ムービーID: {{$movie_id}}</p>
-<p>スケジュールID: {{$schedule_id}}</p>
-<p>スケジュールID: {{$sheet_id}}</p>
+
+<form action="/reservations/store" method="POST" class="form">
+  @csrf
+  <h1>シート最終登録</h1>
+
+  <div class="formTextField">
+    <div>
+      <p>ムービーID</p>
+    </div>
+    <div>
+      <p>{{$movie_id}}</p>
+    </div>
+  </div>
+
+  <div class="formTextField">
+    <div>
+      <p>スケジュールID</p>
+    </div>
+    <div>
+      <p>{{ $schedule_id }}</p>
+    </div>
+  </div>
+  <div class="formTextField">
+    <div>
+      <p>シートID</p>
+    </div>
+    <div>
+      <p>{{ $sheet_id }}</p>
+    </div>
+  </div>
+
+  <input type="hidden" name="movie_id" value="{{$movie_id}}">
+  <input type="hidden" name="schedule_id" value="{{$schedule_id}}">
+  <input type="hidden" name="sheet_id" value="{{$sheet_id}}">
+
+  <div class="formTextField">
+    <div>
+      <p>日付</p>
+    </div>
+    <div>
+      <input type="date" name="date" required value="{{ old('date', '') }}">
+      @error('date')
+      <p style="color: red;">{{ $message }}</p>
+      @enderror
+    </div>
+  </div>
+
+  <div class="formTextField">
+    <div>
+      <p>お名前</p>
+    </div>
+    <div>
+      <input type="text" name="name" required value="{{ old('name', '') }}" placeholder="映画　太郎">
+      @error('name')
+      <p style="color: red;">{{ $message }}</p>
+      @enderror
+    </div>
+  </div>
+
+  <div class="formTextField">
+    <div>
+      <p>メールアドレス</p>
+    </div>
+    <div>
+      <input type="email" name="email" required value="{{ old('email', '') }}">
+      @error('email')
+      <p style="color: red;">{{ $message }}</p>
+      @enderror
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: center; padding: 10px">
+    <button type="submit" class="linkButton">予約を確定する</button>
+  </div>
+
+</form>
 @endif
 
 @endsection
