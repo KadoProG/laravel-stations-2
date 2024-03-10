@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  <div class="formTextField">
+  <div class="formTextField fullWidth">
     <div>
       <p>お名前</p>
     </div>
@@ -80,12 +80,12 @@
     </div>
   </div>
 
-  <div class="formTextField">
+  <div class="formTextField fullWidth">
     <div>
       <p>メールアドレス</p>
     </div>
     <div>
-      <input type="email" name="email" required value="{{ old('email', '') }}">
+      <input type="email" name="email" required value="{{ old('email', '') }}" placeholder="example@gmail.com">
       @error('email')
       <p style="color: red;">{{ $message }}</p>
       @enderror
