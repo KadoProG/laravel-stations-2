@@ -434,6 +434,7 @@
           ['route' => '/test/sheet', 'name' => 'シート'],
           ['route' => '/test/genre', 'name' => 'ジャンル'],
           ['route' => '/test/scheduleTest', 'name' => 'スケジュールテスト'],
+          ['route' => '/test/reservation', 'name' => '予約リストテスト'],
         ] ?>
         @foreach ($routes as $route)
         <li style="margin:10px 20px"><a href="{{$route['route']}}" target="_blank">{{$route['name']}}<span style="background: #ddd; margin: 10px; padding: 4px">{{$route['route']}}</span></a></li>
