@@ -22,6 +22,7 @@ Route::get('/', function () {
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\ScheduleAPIController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\SheetController;
 
 // Route::get('URL', [Controllerの名前::class, 'Controller内のfunction名']);
 Route::get('/practice', [PracticeController::class, 'sample']);
@@ -35,11 +36,13 @@ Route::get('/admin/movies', [MovieController::class, 'movie_admin']);
 Route::get('/admin/movies/create', [MovieController::class, 'movies_create']);
 Route::post('/admin/movies/store', [MovieAPIController::class, 'movies_store']);
 Route::get('/admin/movies/{id}/edit', [MovieController::class, 'movies_edit']);
-Route::get('/admin/movies/{id}', [MovieController::class, 'movie_detail']);
+Route::get('/admin/movies/{id}', [MovieController::class, 'movie_detail_admin']);
 Route::patch('/admin/movies/{id}/update', [MovieAPIController::class, 'movies_update']);
 Route::delete('/admin/movies/{id}/destroy', [MovieAPIController::class, 'movies_delete']);
 
-Route::get('/sheets', [MovieController::class, 'sheets_get']);
+Route::get('/sheets', [SheetController::class, 'page_get_sheets']);
+Route::get('/movies/{movie_id}/schedules/{schedule_id}/sheets', [SheetController::class, 'page_get_sheets_register']);
+Route::get('/movies/{movie_id}/schedules/{schedule_id}/reservations/create', [SheetController::class, 'page_get_sheets_reserve_edit'])->name('sheets.reserve.edit');
 
 Route::get('/admin/movies/{id}/schedules/create', [ScheduleController::class, 'page_get_schedules_admin_create']); // スケジュール一覧表示
 Route::post('/admin/movies/{id}/schedules/store', [ScheduleAPIController::class, 'post_schedules_store']); // スケジュール更新

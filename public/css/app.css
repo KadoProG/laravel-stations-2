@@ -50,13 +50,27 @@
 .movies {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
 }
-
-.movies img {
-  width: 300px;
+.movies > * {
+  display: flex;
+}
+.movies > * img {
+  width: 200px;
   height: auto;
-  max-height: 200px;
+  max-height: 100px;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.linkButton {
+  display: inline-block;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+}
+.linkButton:hover {
+  text-decoration: underline;
 }

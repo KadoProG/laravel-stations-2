@@ -42,7 +42,10 @@ class MovieController extends Controller
     return $this->movies($request, true);
   }
 
-  public function movie_detail(Request $request, $id)
+  /**
+   * ムービー詳細画面
+   */
+  public function movie_detail(Request $request, string $id, bool $hasAdmin = false)
   {
     $movie = Movie::find($id);
 
@@ -54,7 +57,15 @@ class MovieController extends Controller
       ->orderBy('start_time', 'asc')
       ->get();
 
-    return view("movie_detail", ['movie' => $movie, 'schedules' => $schedules]);
+    return view("movie_detail", ['movie' => $movie, 'schedules' => $schedules, 'hasAdmin' => $hasAdmin]);
+  }
+
+  /**
+   * ムービー詳細画面(admin)
+   */
+  public function movie_detail_admin(Request $request, string $id)
+  {
+    return $this->movie_detail($request, $id, true);
   }
 
 
@@ -111,11 +122,5 @@ class MovieController extends Controller
 
     $genres = Genre::all();
     return view("movies_create", ['movie' => $movie, 'genres' => $genres]);
-  }
-
-  public function sheets_get(Request $request)
-  {
-    $sheets = Sheet::all();
-    return view('sheets', ['sheets' => $sheets]);
   }
 }

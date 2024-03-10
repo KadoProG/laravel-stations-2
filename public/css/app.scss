@@ -49,12 +49,26 @@
 .movies {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
+  & > * {
+    display: flex;
+    & img {
+      width: 200px;
+      height: auto;
+      max-height: 100px;
+      object-fit: cover;
+    }
+  }
 }
 
-.movies img {
-  width: 300px;
-  height: auto;
-  max-height: 200px;
-  object-fit: cover;
+.linkButton {
+  display: inline-block;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 }
