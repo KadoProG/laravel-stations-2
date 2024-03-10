@@ -1,11 +1,11 @@
 @extends('layouts.layout')
 
-@section('title', 'シート一覧画面')
+@section('title', (isset($movie_id) && isset($schedule_id)) ? 'シート選択画面': 'シート一覧画面')
 
 @section('content')
 
 
-<h1>{{(isset($movie_id) && isset($schedule_id)) ? 'シートを選択する': 'シート一覧'}}</h1>
+<h1>{{(isset($movie_id) && isset($schedule_id)) ? 'シートを選択してください': 'シート一覧'}}</h1>
 
 
 @if (session('error'))
@@ -31,16 +31,17 @@
     text-align: center;
   }
 
-  table tr td button {
+  table tr td>* {
     width: 100%;
+    display: inline-block;
     background: transparent;
     border: none;
     height: 24px;
     cursor: pointer;
-    margin-bottom: 2px;
+    margin: 2px;
   }
 
-  table tr td button:hover {
+  table tr td>*:hover {
     background: #fff;
   }
 </style>
@@ -72,25 +73,38 @@
     </tr>
     @endif
 
-    <!-- /movies/movie_id/schedules/schedule_id/reservations/create -->
-
     <tr>
       <td>
-        <a href="{{ route('sheets.reserve.edit', ['movie_id' => $movie_id, 'schedule_id' => $schedule_id, 'sheet_id' => $sheet->id]) }}">
+        @if (isset($movie_id) && isset($schedule_id))
+        <a href="{{ route('sheets.reserve.edit', 
+          [
+            'movie_id' => $movie_id,
+            'schedule_id' => $schedule_id, 
+            'sheet_id' => $sheet->id
+          ]) }}">
+          @endif
           {{ $sheet->row }}-{{ $sheet->column }}
+          @if (isset($movie_id) && isset($schedule_id))
         </a>
+        @endif
       </td>
       @php
       $currentRow = $sheet->row;
       @endphp
       @else
       <td>
+        @if (isset($movie_id) && isset($schedule_id))
         <a href="{{ route('sheets.reserve.edit', 
           [
             'movie_id' => $movie_id,
             'schedule_id' => $schedule_id, 
             'sheet_id' => $sheet->id
-          ]) }}">{{ $sheet->row }}-{{ $sheet->column }}</a>
+          ]) }}">
+          @endif
+          {{ $sheet->row }}-{{ $sheet->column }}
+          @if (isset($movie_id) && isset($schedule_id))
+        </a>
+        @endif
       </td>
       @endif
       @endforeach

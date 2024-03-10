@@ -70,7 +70,44 @@
   color: white;
   padding: 10px;
   text-decoration: none;
+  border: none;
 }
 .linkButton:hover {
   text-decoration: underline;
+}
+
+.formTextField {
+  display: flex;
+  width: 100%;
+  padding: 16px 0;
+}
+.formTextField.fullWidth > div:last-child input {
+  width: 100%;
+}
+.formTextField > div:first-child {
+  width: 160px;
+  padding: 4px;
+}
+.formTextField > div:last-child {
+  flex: 1;
+  position: relative;
+}
+.formTextField > div:last-child > *:first-child {
+  font-size: 16px;
+  padding: 4px;
+}
+.formTextField > div:last-child > p:first-child {
+  font-weight: bold;
+}
+.formTextField > div:last-child p {
+  position: absolute;
+  font-size: 14px;
+}
+
+.form {
+  max-width: 500px;
+  margin: 10px auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 10px;
 }

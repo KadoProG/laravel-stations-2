@@ -68,7 +68,52 @@
   color: white;
   padding: 10px;
   text-decoration: none;
+  border: none;
   &:hover {
     text-decoration: underline;
   }
+}
+
+.formTextField {
+  display: flex;
+  width: 100%;
+  padding: 16px 0;
+  &.fullWidth {
+    & > div {
+      &:last-child {
+        & input {
+          width: 100%;
+        }
+      }
+    }
+  }
+  & > div {
+    &:first-child {
+      width: 160px;
+      padding: 4px;
+    }
+    &:last-child {
+      flex: 1;
+      position: relative;
+      & > *:first-child {
+        font-size: 16px;
+        padding: 4px;
+      }
+      & > p:first-child {
+        font-weight: bold;
+      }
+      & p {
+        position: absolute;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.form {
+  max-width: 500px;
+  margin: 10px auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 10px;
 }

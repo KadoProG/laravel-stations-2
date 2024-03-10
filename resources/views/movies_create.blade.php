@@ -4,32 +4,54 @@
 
 @section('content')
 
-<h1>ムービーを作成・編集する</h1>
 
 {{-- バリデーションエラーメッセージの表示 --}}
-@if ($errors->any())
-<div style="color: red;">
-  <ul>
-    @foreach ($errors->all() as $error)
-    <li>{{ $error }}</li>
-    @endforeach
-  </ul>
-</div>
-@endif
 
-<form action="/admin/movies/{{ isset($movie) ? $movie->id . '/update/':'store' }}" method="POST">
+<form action="/admin/movies/{{ isset($movie) ? $movie->id . '/update/':'store' }}" method="POST" class="form">
   @csrf
 
   @if (isset($movie))
   @method('PATCH') {{-- Use PATCH method for updates --}}
   @endif
 
-  <p>タイトル</p>
-  <input type="text" name="title" required value="{{ old('title', $movie->title ?? '') }}">
-  {{-- エラーメッセージの表示 --}}
-  @error('title')
-  <p style="color: red;">{{ $message }}</p>
-  @enderror
+  <h1>ムービーを作成・編集する</h1>
+
+  @if ($errors->any())
+  <div style="color: red;">
+    <ul>
+      @foreach ($errors->all() as $error)
+      <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+  @endif
+
+  <div class="formTextField">
+    <div>
+      <p>タイトル</p>
+    </div>
+    <div>
+      <input type="text" name="title" required value="{{ old('title', $movie->title ?? '') }}">
+      {{-- エラーメッセージの表示 --}}
+      @error('title')
+      <p style="color: red;">{{ $message }}</p>
+      @enderror
+    </div>
+  </div>
+
+  <div class="formTextField fullWidth">
+    <div>
+      <p>画像URL</p>
+    </div>
+    <div>
+      <input type="url" name="image_url" required value="{{ old('image_url', $movie->image_url ?? '') }}">
+      @error('image_url')
+      <p style="color: red;">{{ $message }}</p>
+      @enderror
+    </div>
+  </div>
+
+
 
   <div style="position: relative;">
     <label for="genre_id">ジャンル:</label>
@@ -53,12 +75,6 @@
   <p style="color: red;">{{ $message }}</p>
   @enderror
 
-  <p>画像URL</p>
-  <input type="url" name="image_url" required value="{{ old('image_url', $movie->image_url ?? '') }}">
-  @error('image_url')
-  <p style="color: red;">{{ $message }}</p>
-  @enderror
-
   <p>公開年</p>
   <input type="number" name="published_year" required value="{{ old('published_year', $movie->published_year ?? '') }}">
   @error('published_year')
@@ -76,7 +92,9 @@
   <p style="color: red;">{{ $message }}</p>
   @enderror
 
-  <button type="submit">送信する</button>
+  <div style="display: flex; justify-content: center; padding: 10px">
+    <button type="submit" class="linkButton">更新する</button>
+  </div>
 </form>
 </body>
 
