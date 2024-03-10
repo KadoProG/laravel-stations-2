@@ -41,8 +41,14 @@ Route::patch('/admin/movies/{id}/update', [MovieAPIController::class, 'movies_up
 Route::delete('/admin/movies/{id}/destroy', [MovieAPIController::class, 'movies_delete']);
 
 Route::get('/sheets', [SheetController::class, 'page_get_sheets']);
-Route::get('/movies/{movie_id}/schedules/{schedule_id}/sheets', [SheetController::class, 'page_get_sheets_register']);
-Route::get('/movies/{movie_id}/schedules/{schedule_id}/reservations/create', [SheetController::class, 'page_get_sheets_reserve_edit'])->name('sheets.reserve.edit');
+Route::get('/movies/{movie_id}/schedules/{schedule_id}/sheets', [
+    SheetController::class,
+    'page_get_sheets_register'
+])->name('sheets.select');
+Route::get(
+    '/movies/{movie_id}/schedules/{schedule_id}/reservations/create',
+    [SheetController::class, 'page_get_sheets_reserve_edit']
+)->name('sheets.reserve.edit');
 
 Route::get('/admin/movies/{id}/schedules/create', [ScheduleController::class, 'page_get_schedules_admin_create']); // スケジュール一覧表示
 Route::post('/admin/movies/{id}/schedules/store', [ScheduleAPIController::class, 'post_schedules_store']); // スケジュール更新

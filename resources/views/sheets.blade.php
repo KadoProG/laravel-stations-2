@@ -36,6 +36,14 @@
       <p>{{ $schedule_id }}</p>
     </div>
   </div>
+  <div class="formTextField">
+    <div>
+      <p>日付</p>
+    </div>
+    <div>
+      <p>{{ $date }}</p>
+    </div>
+  </div>
   @endif
 
   <h3>シートを選択してください</h3>
@@ -102,7 +110,8 @@
           [
             'movie_id' => $movie_id,
             'schedule_id' => $schedule_id, 
-            'sheet_id' => $sheet->id
+            'sheet_id' => $sheet->id,
+            'date' => \Carbon\Carbon::parse($date)->format('Y-m-d'),
           ]) }}">
             @endif
             {{ $sheet->row }}-{{ $sheet->column }}
@@ -120,7 +129,8 @@
           [
             'movie_id' => $movie_id,
             'schedule_id' => $schedule_id, 
-            'sheet_id' => $sheet->id
+            'sheet_id' => $sheet->id,
+            'date' => \Carbon\Carbon::parse($date)->format('Y-m-d'),
           ]) }}">
             @endif
             {{ $sheet->row }}-{{ $sheet->column }}

@@ -20,10 +20,14 @@ class SheetController extends Controller
   /**
    * シート選択画面
    */
-  public function page_get_sheets_register(string $movie_id, string $schedule_id)
+  public function page_get_sheets_register(Request $request, string $movie_id, string $schedule_id)
   {
+    $date = $request->query('date');
     $sheets = Sheet::all();
-    return view('sheets', ['sheets' => $sheets, 'movie_id' => $movie_id, 'schedule_id' => $schedule_id]);
+    return view('sheets', [
+      'sheets' => $sheets, 'movie_id' => $movie_id,
+      'schedule_id' => $schedule_id, 'date' => $date
+    ]);
   }
 
   /**
@@ -33,9 +37,10 @@ class SheetController extends Controller
   {
     // $sheet_id を Request オブジェクトから取得
     $sheet_id = $request->query('sheet_id');
+    $date = $request->query('date');
     return view('sheets_reserve', [
       'movie_id' => $movie_id, 'schedule_id' => $schedule_id,
-      'sheet_id' => $sheet_id
+      'sheet_id' => $sheet_id, 'date' => $date,
     ]);
   }
 
