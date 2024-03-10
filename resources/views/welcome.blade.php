@@ -41,12 +41,6 @@
     text-decoration: inherit
   }
 
-  svg,
-  video {
-    display: block;
-    vertical-align: middle
-  }
-
   video {
     max-width: 100%;
     height: auto
@@ -434,6 +428,7 @@
           ['route' => '/movies', 'name' => 'ムービー一覧'],
           ['route' => '/admin/movies', 'name' => 'ムービー一覧(admin)'],
           ['route' => '/admin/schedules', 'name' => 'スケジュール'],
+          ['route' => '/sheets', 'name' => 'シート'],
           ['route' => '/test/movie', 'name' => 'ムービー'],
           ['route' => '/test/schedule', 'name' => 'スケジュール'],
           ['route' => '/test/sheet', 'name' => 'シート'],
