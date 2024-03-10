@@ -61,10 +61,7 @@
       <p>日付</p>
     </div>
     <div>
-      <input type="date" name="date" required value="{{ old('date', '') }}">
-      @error('date')
-      <p style="color: red;">{{ $message }}</p>
-      @enderror
+      <p>{{ $date }}</p>
     </div>
   </div>
 

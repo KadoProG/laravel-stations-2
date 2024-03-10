@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use App\Models\Reservation;
 use App\Models\Schedule;
 use Illuminate\Http\Request; // リクエスト処理をする際はここのインポートは必須！ 
 use Illuminate\Support\Facades\DB;
@@ -22,13 +23,13 @@ class SheetAPIController extends Controller
         'sheet_id' => "required|exists:sheets,id",
         'movie_id' => 'required|exists:movies,id',
         'date' => "required|date_format:Y-m-d",
-        'email' => "required|email"
+        'email' => "required|email",
       ]);
 
       DB::beginTransaction();
 
       // 新しいインスタンスの作成
-      $schedule_data = new Schedule();
+      $schedule_data = new Reservation();
       $schedule_data->fill($validatedData);
       $schedule_data->save();
 
