@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use App\Models\Sheet;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Request; // リクエスト処理をする際はここのインポートは必須！ 
+use Illuminate\Validation\ValidationException;
 
 class SheetController extends Controller
 {
@@ -22,11 +24,19 @@ class SheetController extends Controller
    */
   public function page_get_sheets_register(Request $request, string $movie_id, string $schedule_id)
   {
-    $date = $request->query('date');
+    try {
+      $validatedData = $request->validate([
+        'date' => 'required|date',
+      ]);
+    } catch (ValidationException $e) {
+      // バリデーションエラーが発生した場合の処理
+      return response()->json(['error' => $e->validator->errors()], 400);
+    }
+
     $sheets = Sheet::all();
     return view('sheets', [
       'sheets' => $sheets, 'movie_id' => $movie_id,
-      'schedule_id' => $schedule_id, 'date' => $date
+      'schedule_id' => $schedule_id, 'date' => $validatedData['date']
     ]);
   }
 
@@ -35,13 +45,22 @@ class SheetController extends Controller
    */
   public function page_get_sheets_reserve_edit(Request $request, string $movie_id, string $schedule_id)
   {
-    // $sheet_id を Request オブジェクトから取得
-    $sheet_id = $request->query('sheet_id');
-    $date = $request->query('date');
-    return view('sheets_reserve', [
-      'movie_id' => $movie_id, 'schedule_id' => $schedule_id,
-      'sheet_id' => $sheet_id, 'date' => $date,
-    ]);
+    try {
+      $validatedData = $request->validate([
+        'sheetId' => 'required|exists:sheets,id',
+        'date' => 'required|date',
+      ]);
+
+      return view('sheets_reserve', [
+        'movie_id' => $movie_id,
+        'schedule_id' => $schedule_id,
+        'sheetId' => $validatedData['sheetId'],
+        'date' => $validatedData['date'],
+      ]);
+    } catch (ValidationException $e) {
+      // バリデーションエラーが発生した場合の処理
+      return response()->json(['error' => $e->validator->errors()], 400);
+    }
   }
 
   /**JSONで出力 */

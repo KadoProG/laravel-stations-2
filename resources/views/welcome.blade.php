@@ -278,6 +278,12 @@
     grid-template-columns: repeat(1, minmax(0, 1fr))
   }
 
+  .chip {
+    background: #ddd;
+    margin: 10px;
+    padding: 4px
+  }
+
   @media (min-width:640px) {
     .sm\:rounded-lg {
       border-radius: .5rem
@@ -382,6 +388,12 @@
       color: #6b7280;
       color: rgba(107, 114, 128, var(--tw-text-opacity))
     }
+
+    .chip {
+      background: #444;
+      margin: 10px;
+      padding: 4px
+    }
   }
 </style>
 
@@ -437,7 +449,12 @@
           ['route' => '/test/reservation', 'name' => '予約リストテスト'],
         ] ?>
         @foreach ($routes as $route)
-        <li style="margin:10px 20px"><a href="{{$route['route']}}" target="_blank">{{$route['name']}}<span style="background: #ddd; margin: 10px; padding: 4px">{{$route['route']}}</span></a></li>
+        <li style="margin:10px 20px">
+          <a href="{{$route['route']}}" target="_blank" class="linkButton">
+            {{ $route['name'] }}
+            <span class="chip">{{ $route['route'] }}</span>
+          </a>
+        </li>
         @endforeach
       </ul>
 

@@ -47,9 +47,11 @@
         <li>
           <a href="/admin/schedules/{{$schedule->id}}">
             上映：
-            {{ \Carbon\Carbon::parse($schedule->start_time)->format('Y-m-d H:i') }}
+            {{ $schedule->start_time }}
+            <!-- {{ \Carbon\Carbon::parse($schedule->start_time)->format('Y-m-d H:i') }} -->
             〜
-            {{ \Carbon\Carbon::parse($schedule->end_time)->format('Y-m-d H:i') }}
+            {{ $schedule->end_time }}
+            <!-- {{ \Carbon\Carbon::parse($schedule->end_time)->format('Y-m-d H:i') }} -->
           </a>
           @if($hasAdmin)
           <div style="display: flex">
