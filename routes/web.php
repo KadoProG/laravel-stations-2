@@ -22,6 +22,7 @@ Route::get('/', function () {
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\ScheduleAPIController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\SheetAPIController;
 use App\Http\Controllers\SheetController;
 
 // Route::get('URL', [Controllerの名前::class, 'Controller内のfunction名']);
@@ -49,6 +50,7 @@ Route::get(
     '/movies/{movie_id}/schedules/{schedule_id}/reservations/create',
     [SheetController::class, 'page_get_sheets_reserve_edit']
 )->name('sheets.reserve.edit');
+Route::post('/reservations/store', [SheetAPIController::class, 'post_reservations_store']); // 予約
 
 Route::get('/admin/movies/{id}/schedules/create', [ScheduleController::class, 'page_get_schedules_admin_create']); // スケジュール一覧表示
 Route::post('/admin/movies/{id}/schedules/store', [ScheduleAPIController::class, 'post_schedules_store']); // スケジュール更新

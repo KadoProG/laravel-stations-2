@@ -110,7 +110,7 @@
           [
             'movie_id' => $movie_id,
             'schedule_id' => $schedule_id, 
-            'sheet_id' => $sheet->id,
+            'sheetId' => $sheet->id,
             'date' => \Carbon\Carbon::parse($date)->format('Y-m-d'),
           ]) }}">
             @endif
@@ -129,7 +129,7 @@
           [
             'movie_id' => $movie_id,
             'schedule_id' => $schedule_id, 
-            'sheet_id' => $sheet->id,
+            'sheetId' => $sheet->id,
             'date' => \Carbon\Carbon::parse($date)->format('Y-m-d'),
           ]) }}">
             @endif

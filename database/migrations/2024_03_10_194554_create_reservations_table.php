@@ -16,9 +16,11 @@ class CreateReservationsTable extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->date('date')->comment('上映日');
+            $table->unsignedBigInteger('schedule_id')->comment('スケジュールID');
             $table->foreign('schedule_id')->references('id')->on('schedules');
             $table->index('schedule_id');
 
+            $table->unsignedBigInteger('sheet_id')->comment('シートID');
             $table->foreign('sheet_id')->references('id')->on('sheets');
             $table->index('sheet_id');
 
@@ -27,6 +29,9 @@ class CreateReservationsTable extends Migration
             $table->boolean('is_canceled')->comment('予約キャンセル済み')->default(false);
 
             $table->timestamps();
+
+            // 複合ユニークキーの追加
+            $table->unique(['sheet_id', 'schedule_id', 'is_canceled']);
         });
     }
 

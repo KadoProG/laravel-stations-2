@@ -102,7 +102,7 @@
       & > p:first-child {
         font-weight: bold;
       }
-      & p {
+      & > p:last-child {
         position: absolute;
         font-size: 14px;
       }

@@ -99,7 +99,7 @@
 .formTextField > div:last-child > p:first-child {
   font-weight: bold;
 }
-.formTextField > div:last-child p {
+.formTextField > div:last-child > p:last-child {
   position: absolute;
   font-size: 14px;
 }

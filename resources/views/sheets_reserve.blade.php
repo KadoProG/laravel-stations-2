@@ -8,16 +8,7 @@
 
 
 
-@if (session('error'))
-<p style="color: red">
-  {{ session('error') }}
-</p>
-@endif
-@if (session('success'))
-<p style="color: green">
-  {{ session('success') }}
-</p>
-@endif
+
 
 
 @if (isset($movie_id) && isset($schedule_id))
@@ -26,12 +17,26 @@
   @csrf
   <h1>シート最終登録</h1>
 
+  @if (session('error'))
+  <p style="color: red">
+    {{ session('error') }}
+  </p>
+  @endif
+  @if (session('success'))
+  <p style="color: green">
+    {{ session('success') }}
+  </p>
+  @endif
+
   <div class="formTextField">
     <div>
       <p>ムービーID</p>
     </div>
     <div>
       <p>{{$movie_id}}</p>
+      @error('movie_id')
+      <p style="color: red;">{{ $message }}</p>
+      @enderror
     </div>
   </div>
 
@@ -41,6 +46,9 @@
     </div>
     <div>
       <p>{{ $schedule_id }}</p>
+      @error('schedule_id')
+      <p style="color: red;">{{ $message }}</p>
+      @enderror
     </div>
   </div>
   <div class="formTextField">
@@ -48,13 +56,13 @@
       <p>シートID</p>
     </div>
     <div>
-      <p>{{ $sheet_id }}</p>
+      <p>{{ $sheetId }}</p>
+      @error('sheetId')
+      <p style="color: red;">{{ $message }}</p>
+      @enderror
     </div>
   </div>
 
-  <input type="hidden" name="movie_id" value="{{$movie_id}}">
-  <input type="hidden" name="schedule_id" value="{{$schedule_id}}">
-  <input type="hidden" name="sheet_id" value="{{$sheet_id}}">
 
   <div class="formTextField">
     <div>
@@ -64,6 +72,11 @@
       <p>{{ $date }}</p>
     </div>
   </div>
+
+  <input type="hidden" name="movie_id" value="{{ $movie_id }}">
+  <input type="hidden" name="schedule_id" value="{{ $schedule_id }}">
+  <input type="hidden" name="sheet_id" value="{{ $sheetId }}">
+  <input type="hidden" name="date" value="{{ $date }}">
 
   <div class="formTextField fullWidth">
     <div>
