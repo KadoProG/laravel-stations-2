@@ -279,7 +279,8 @@
   }
 
   .chip {
-    background: #ddd;
+    background: #444;
+    color: white;
     margin: 10px;
     padding: 4px
   }
@@ -389,11 +390,6 @@
       color: rgba(107, 114, 128, var(--tw-text-opacity))
     }
 
-    .chip {
-      background: #444;
-      margin: 10px;
-      padding: 4px
-    }
   }
 </style>
 
