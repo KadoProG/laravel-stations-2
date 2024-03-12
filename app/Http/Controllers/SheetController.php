@@ -33,7 +33,8 @@ class SheetController extends Controller
       return response()->json(['error' => $e->validator->errors()], 400);
     }
 
-    $sheets = Sheet::all();
+    $sheets = Sheet::with('reservations')->get();
+
     return view('sheets', [
       'sheets' => $sheets, 'movie_id' => $movie_id,
       'schedule_id' => $schedule_id, 'date' => $validatedData['date']
@@ -50,6 +51,17 @@ class SheetController extends Controller
         'sheetId' => 'required|exists:sheets,id',
         'date' => 'required|date',
       ]);
+
+      $sheetId = $validatedData['sheetId'];
+
+      // 特定のSheetに関連する予約を取得
+      $sameSheet = Reservation::where('sheet_id', $sheetId)
+        ->where('schedule_id', $schedule_id)
+        ->where('is_canceled', false)->first();
+
+      if ($sameSheet) {
+        return response()->json(['error' => '既に予約済み'], 400);
+      }
 
       return view('sheets_reserve', [
         'movie_id' => $movie_id,

@@ -59,19 +59,20 @@
       background: #ddd;
     }
 
-    table tr td {
-      background: #f5f5f5;
-      text-align: center;
-    }
 
     table tr td>* {
       width: 100%;
+      text-align: center;
       display: inline-block;
       background: transparent;
       border: none;
       height: 24px;
+      /* margin: 2px; */
+    }
+
+    table tr td>a {
       cursor: pointer;
-      margin: 2px;
+      background: #f5f5f5;
     }
 
     table tr td>*:hover {
@@ -106,6 +107,7 @@
       <tr>
         <td>
           @if (isset($movie_id) && isset($schedule_id))
+          @if (!(count($sheet->reservations) !== 0 && !($sheet->reservations[0]->is_canceled)))
           <a href="{{ route('sheets.reserve.edit', 
           [
             'movie_id' => $movie_id,
@@ -113,10 +115,17 @@
             'sheetId' => $sheet->id,
             'date' => \Carbon\Carbon::parse($date)->format('Y-m-d'),
           ]) }}">
-            @endif
-            {{ $sheet->row }}-{{ $sheet->column }}
-            @if (isset($movie_id) && isset($schedule_id))
+            @else
+            <span style="background: #444; color: #fff;">
+              @endif
+              @endif
+              {{ $sheet->row }}-{{ $sheet->column }}
+              @if (isset($movie_id) && isset($schedule_id))
+              @if (count($sheet->reservations) !== 0 && !($sheet->reservations[0]->is_canceled))
+            </span>
+            @else
           </a>
+          @endif
           @endif
         </td>
         @php
@@ -125,6 +134,7 @@
         @else
         <td>
           @if (isset($movie_id) && isset($schedule_id))
+          @if (!(count($sheet->reservations) !== 0 && !($sheet->reservations[0]->is_canceled)))
           <a href="{{ route('sheets.reserve.edit', 
           [
             'movie_id' => $movie_id,
@@ -132,10 +142,17 @@
             'sheetId' => $sheet->id,
             'date' => \Carbon\Carbon::parse($date)->format('Y-m-d'),
           ]) }}">
-            @endif
-            {{ $sheet->row }}-{{ $sheet->column }}
-            @if (isset($movie_id) && isset($schedule_id))
+            @else
+            <span style="background: #444; color: #fff">
+              @endif
+              @endif
+              {{ $sheet->row }}-{{ $sheet->column }}
+              @if (isset($movie_id) && isset($schedule_id))
+              @if (count($sheet->reservations) !== 0 && !($sheet->reservations[0]->is_canceled))
+            </span>
+            @else
           </a>
+          @endif
           @endif
         </td>
         @endif

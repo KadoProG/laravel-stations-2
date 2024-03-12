@@ -9,4 +9,9 @@ class Sheet extends Model
 {
     protected $fillable = ['column', 'row']; // これ挿入しないとエラー出る、とChatGPTに教えてもらった
     use HasFactory;
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'sheet_id');
+    }
 }
