@@ -279,7 +279,7 @@
   }
 
   .chip {
-    background: #ddd;
+    background: #444;
     margin: 10px;
     padding: 4px
   }

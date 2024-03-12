@@ -11,8 +11,9 @@ class Reservation extends Model
     protected $table = "reservations";
     use HasFactory;
 
-    // public function schedules()
-    // {
-    //     return $this->belongsTo(Schedule::class);
-    // }
+    // リレーション定義
+    public function sheet()
+    {
+        return $this->belongsTo(Sheet::class, 'sheet_id');
+    }
 }

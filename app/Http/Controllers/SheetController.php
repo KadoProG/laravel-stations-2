@@ -33,7 +33,11 @@ class SheetController extends Controller
       return response()->json(['error' => $e->validator->errors()], 400);
     }
 
+    // 例: Sheetコントローラーなどでの利用
     $sheets = Sheet::all();
+
+    info($sheets);
+
     return view('sheets', [
       'sheets' => $sheets, 'movie_id' => $movie_id,
       'schedule_id' => $schedule_id, 'date' => $validatedData['date']

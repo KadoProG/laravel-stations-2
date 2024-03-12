@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sheet extends Model
 {
-    protected $fillable = ['column', 'row']; // これ挿入しないとエラー出る、とChatGPTに教えてもらった
+    protected $fillable = ['id', 'other_columns', 'reservations_exist'];
+    protected $table = "sheets";
     use HasFactory;
+
+    // リレーション定義
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'sheet_id');
+    }
 }
