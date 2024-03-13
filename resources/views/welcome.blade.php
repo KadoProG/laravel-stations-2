@@ -436,6 +436,7 @@
           ['route' => '/movies', 'name' => 'ムービー一覧'],
           ['route' => '/admin/movies', 'name' => 'ムービー一覧(admin)'],
           ['route' => '/admin/schedules', 'name' => 'スケジュール'],
+          ['route' => '/admin/reservations', 'name' => '予約一覧'],
           ['route' => '/sheets', 'name' => 'シート'],
           ['route' => '/test/movie', 'name' => 'ムービー'],
           ['route' => '/test/schedule', 'name' => 'スケジュール'],
