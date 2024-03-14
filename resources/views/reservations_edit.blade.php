@@ -4,7 +4,11 @@
 
 @section('content')
 
-<form action="{{ $hasAdmin ? '/admin/reservations/' . ($reservation->id ?? '') : '/reservations/store' }}" method="POST" class="form">
+<form action="{{ 
+  $hasAdmin 
+    ? '/admin/reservations/' . ($reservation->id ?? '') 
+    : '/reservations/store' 
+  }}" method="POST" class="form">
   @csrf
   @if (isset($reservation))
   @method('PATCH') {{-- Use PATCH method for updates --}}
@@ -28,7 +32,9 @@
     </div>
     <div>
       @if ($hasAdmin)
-      <input type="text" name="movie_id" required value="{{ old('movie_id', $reservation->schedule->movie_id ?? '') }}">
+      <input type="text" name="movie_id" required value="{{ 
+        old('movie_id', $reservation->schedule->movie_id ?? '')
+       }}">
       @else
       <p>{{$movie_id ?? ''}}</p>
       @endif
@@ -44,7 +50,9 @@
     </div>
     <div>
       @if ($hasAdmin)
-      <input type="text" name="schedule_id" required value="{{ old('schedule_id', $reservation->schedule_id ?? '') }}">
+      <input type="text" name="schedule_id" required value="{{ 
+        old('schedule_id', $reservation->schedule_id ?? '') 
+      }}">
       @else
       <p>{{$schedule_id ?? ''}}</p>
       @endif
@@ -59,7 +67,9 @@
     </div>
     <div>
       @if ($hasAdmin)
-      <input type="text" name="sheet_id" required value="{{ old('sheet_id', $reservation->sheet_id ?? '') }}">
+      <input type="text" name="sheet_id" required value="{{ 
+        old('sheet_id', $reservation->sheet_id ?? '') 
+      }}">
       @else
       <p>{{$sheetId ?? ''}}</p>
       @endif
@@ -75,11 +85,11 @@
       <p>日付</p>
     </div>
     <div>
-      @if ($hasAdmin)
-      <input type="text" name="date" required value="{{ old('date', $reservation->date ?? '') }}">
-      @else
-      <p>{{$date ?? ''}}</p>
-      @endif
+      <p>{{
+        $date 
+        ?? $reservation->date 
+        ?? Illuminate\Support\Carbon::now()->toDateString()
+      }}</p>
       @error('date')
       <p style="color: red;">{{ $message }}</p>
       @enderror
@@ -98,7 +108,9 @@
       <p>お名前</p>
     </div>
     <div>
-      <input type="text" name="name" required value="{{ old('name', $reservation->name ?? '') }}" placeholder="映画　太郎">
+      <input type="text" name="name" required value="{{ 
+        old('name', $reservation->name ?? '') 
+      }}" placeholder="映画　太郎">
       @error('name')
       <p style="color: red;">{{ $message }}</p>
       @enderror
@@ -110,7 +122,9 @@
       <p>メールアドレス</p>
     </div>
     <div>
-      <input type="email" name="email" required value="{{ old('email', $reservation->email ?? '') }}" placeholder="example@gmail.com">
+      <input type="email" name="email" required value="{{ 
+        old('email', $reservation->email ?? '') 
+      }}" placeholder="example@gmail.com">
       @error('email')
       <p style="color: red;">{{ $message }}</p>
       @enderror
@@ -123,10 +137,12 @@
 </form>
 
 @if ($hasAdmin && isset($reservation))
-<form action="/admin/reservations/{{ $reservation->id }}" method="POST">
+<form action="/admin/reservations/{{ $reservation->id }}" method="POST" class="form">
   @csrf
   @method('DELETE')
-  <button type="submit" onclick="return confirm('本当に削除しますか？')">削除する</button>
+  <div style="text-align: center;">
+    <button type="submit" onclick="return confirm('本当に削除しますか？')" class="linkButton">削除する</button>
+  </div>
 </form>
 @endif
 
