@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use Illuminate\Http\Request; // リクエスト処理をする際はここのインポートは必須！ 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -15,6 +16,9 @@ class SheetAPIController extends Controller
   public function post_reservations_store(Request $request, bool $hasAdmin = false)
   {
     try {
+      if ($hasAdmin) {
+        $request['date'] = Carbon::now()->toDateString(); // 今日
+      }
       // バリデーションフォーマット
       $validatedData = $hasAdmin ? $request->validate([
         'movie_id' => "required|exists:movies,id",
@@ -52,6 +56,9 @@ class SheetAPIController extends Controller
       Reservation::create($validatedData);
 
       DB::commit();
+
+      $reservations = Reservation::all();
+      info($reservations);
 
       if (!$hasAdmin) {
         return redirect("/movies/{$request['movie_id']}")
@@ -98,7 +105,6 @@ class SheetAPIController extends Controller
         'schedule_id' => "required|exists:schedules,id",
         'movie_id' => "required|exists:movies,id",
         'sheet_id' => "required|exists:sheets,id",
-        'date' => "required|date",
         'name' => "required|string",
         'email' => "required|email",
       ]);

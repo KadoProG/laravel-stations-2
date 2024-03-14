@@ -48,7 +48,10 @@ class SheetController extends Controller
       return response()->json(['error' => $e->validator->errors()], 400);
     }
 
-    $sheets = Sheet::with('reservations')->get();
+    $sheets = Sheet::with(['reservations' => function ($query) use ($schedule_id) {
+      $query->where('schedule_id', $schedule_id);
+    }])->get();
+
 
     return view('sheets', [
       'sheets' => $sheets, 'movie_id' => $movie_id,
@@ -78,7 +81,7 @@ class SheetController extends Controller
         if ($sameSheet) {
           return response()->json(['error' => '既に予約済み'], 400);
         }
-        return view('sheets_reserve', [
+        return view('reservations_edit', [
           'movie_id' => $movie_id,
           'schedule_id' => $schedule_id,
           'sheetId' => $validatedData['sheetId'],
@@ -86,7 +89,7 @@ class SheetController extends Controller
           'hasAdmin' => false,
         ]);
       } else {
-        return view('sheets_reserve', [
+        return view('reservations_edit', [
           'hasAdmin' => true,
         ]);
       }
@@ -115,7 +118,7 @@ class SheetController extends Controller
       return redirect()->back()->with('error', '指定されたIDの予約が見つかりませんでした。');
     }
 
-    return view('sheets_reserve', [
+    return view('reservations_edit', [
       'reservation' => $reservation,
       'hasAdmin' => true,
     ]);
