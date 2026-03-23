@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\LaravelStations\Station5;
 
-use App\Practice;
+use App\Models\Practice;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
