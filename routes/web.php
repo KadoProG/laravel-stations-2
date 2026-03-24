@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MovieController as AdminMovieController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\PracticeController;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,7 @@ Route::get('/practice2', [PracticeController::class, 'sample2']);
 Route::get('/practice3', [PracticeController::class, 'sample3']);
 
 Route::get('/movies', [MovieController::class, 'index']);
+
+Route::prefix('admin')->group(function () {
+    Route::get('/movies', [AdminMovieController::class, 'index']);
+});
