@@ -1,0 +1,29 @@
+@extends('layouts.app')
+
+@section('content')
+<h1 class="mb-4">映画一覧（管理画面）</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">画像</th>
+      <th scope="col">タイトル</th>
+      <th scope="col">概要</th>
+      <th scope="col">公開年</th>
+      <th scope="col">上映中かどうか</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach ($movies as $movie)
+    <tr>
+      <td>{{ $movie->id }}</td>
+      <td><img src="{{ $movie->image_url }}" alt="{{ $movie->title }}" style="width: 100px; height: auto;"></td>
+      <td>{{ $movie->title }}</td>
+      <td>{{ $movie->description }}</td>
+      <td>{{ $movie->published_year }}</td>
+      <td>{{ $movie->is_showing ? '上映中' : '上映予定' }}</td>
+    </tr>
+    @endforeach
+  </tbody>
+</table>
+@endsection
