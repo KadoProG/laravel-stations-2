@@ -87,6 +87,20 @@ services:
             ADMINER_DEFAULT_SERVER: mysql-container
             ADMINER_DESIGN: galkaev
 
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: laravel-stations-2-phpmyadmin
+        restart: always
+        ports:
+            - "${DOCKER_PHPMYADMIN_PORT:-58081}:80"
+        environment:
+            PMA_HOST: mysql-container
+            PMA_PORT: ${DOCKER_DB_PORT:-53306}
+            PMA_USER: ${DOCKER_DB_USERNAME:-dev}
+            PMA_PASSWORD: ${DOCKER_DB_PASSWORD:-dev}
+        depends_on:
+            - mysql-container
+
 volumes:
     laravel-railway-mysql-data:
         driver: local
