@@ -18,7 +18,7 @@
 
 <form action="{{ route('admin.movies.update', $movie->id) }}" method="post">
   @csrf
-  @method('PUT')
+  @method('PATCH')
   <div class="form-group">
     <label for="title">タイトル</label>
     <input type="text" name="title" id="title" class="form-control" required value="{{ $movie->title }}">
