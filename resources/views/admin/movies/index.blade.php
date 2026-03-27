@@ -18,6 +18,7 @@
       <th scope="col">概要</th>
       <th scope="col">公開年</th>
       <th scope="col">上映中かどうか</th>
+      <th scope="col">アクション</th>
     </tr>
   </thead>
   <tbody>
@@ -29,6 +30,9 @@
       <td>{{ $movie->description }}</td>
       <td>{{ $movie->published_year }}</td>
       <td>{{ $movie->is_showing ? '上映中' : '上映予定' }}</td>
+      <td>
+        <a href="{{ route('admin.movies.edit', $movie->id) }}" class="btn btn-primary">編集</a>
+      </td>
     </tr>
     @endforeach
   </tbody>
