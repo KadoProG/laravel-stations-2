@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
-use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
@@ -23,13 +22,7 @@ class MovieController extends Controller
 
     public function store(CreateMovieRequest $request)
     {
-        Movie::create([
-            'title' => $request->title,
-            'image_url' => $request->image_url,
-            'published_year' => $request->published_year,
-            'description' => $request->description,
-            'is_showing' => $request->is_showing,
-        ]);
+        Movie::create($request->validated());
         return redirect()->route('admin.movies.index')->with('success', '映画を作成しました');
     }
 
@@ -40,7 +33,7 @@ class MovieController extends Controller
 
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
-        $movie->update($request->all());
+        $movie->update($request->validated());
         return redirect()->route('admin.movies.index')->with('success', '映画を更新しました');
     }
 
