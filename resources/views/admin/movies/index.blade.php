@@ -8,6 +8,12 @@
 </div>
 @endif
 
+@if (session('error'))
+<div class="alert alert-danger">
+  {{ session('error') }}
+</div>
+@endif
+
 <h1 class="mb-4">映画一覧（管理画面）</h1>
 <table class="table">
   <thead>
