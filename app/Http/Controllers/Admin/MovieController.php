@@ -43,4 +43,10 @@ class MovieController extends Controller
         $movie->update($request->all());
         return redirect()->route('admin.movies.index')->with('success', '映画を更新しました');
     }
+
+    public function destroy(Movie $movie)
+    {
+        $movie->delete();
+        return redirect()->route('admin.movies.index')->with('success', '映画を削除しました');
+    }
 }
