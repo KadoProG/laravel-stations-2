@@ -8,6 +8,12 @@
 </div>
 @endif
 
+@if (session('error'))
+<div class="alert alert-danger">
+  {{ session('error') }}
+</div>
+@endif
+
 <h1 class="mb-4">映画一覧（管理画面）</h1>
 <table class="table">
   <thead>
@@ -32,6 +38,11 @@
       <td>{{ $movie->is_showing ? '上映中' : '上映予定' }}</td>
       <td>
         <a href="{{ route('admin.movies.edit', $movie->id) }}" class="btn btn-primary">編集</a>
+        <form action="{{ route('admin.movies.destroy', $movie->id) }}" method="post" class="d-inline" onsubmit="return confirm('この映画を削除しますか？');">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger">削除</button>
+        </form>
       </td>
     </tr>
     @endforeach
